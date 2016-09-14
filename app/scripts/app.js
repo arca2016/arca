@@ -38,12 +38,12 @@ angular
     envServiceProvider.config({
         domains: {
             development: ['localhost'],
-            production: ['sima-1465300851.us-west-2.elb.amazonaws.com','beavertechtesting.com']
+            production: ['52.43.59.235']
         },
         vars: {
             development: {
                 apiUrl: 'http://localhost:5000/',
-                bucketS3: 'https://s3-us-west-2.amazonaws.com/sima-data/',
+                
                 recaptchaKey: '6LdWvSYTAAAAAGlwyWQIBxOTztkvcfRueKWhrZ7C'
 
             },
