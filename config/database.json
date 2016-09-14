@@ -17,10 +17,10 @@
   },
   "production": {
     "db":{
-        "username": "postgres",
-        "password": "postgres",
-        "database": "arca_pro",
-        "host": "localhost",
+        "username": "arca2016",
+        "password": "exitoarca2016",
+        "database": "arca",
+        "host": "arca.cai3wrgpejuz.us-west-2.rds.amazonaws.com",
         "dialect": "postgres",
         "define": {
             "timestamps": true,
