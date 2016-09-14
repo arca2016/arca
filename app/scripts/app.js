@@ -33,8 +33,35 @@ angular
 	
 	$httpProvider.interceptors.push('InterceptorService');
 }])
-.run(['$rootScope',function($rootScope){
-	$rootScope.serviceUrl="http://localhost:5000/"
+.config(['envServiceProvider',function(envServiceProvider) {
+    // set the domains and variables for each environment
+    envServiceProvider.config({
+        domains: {
+            development: ['localhost'],
+            production: ['sima-1465300851.us-west-2.elb.amazonaws.com','beavertechtesting.com']
+        },
+        vars: {
+            development: {
+                apiUrl: 'http://localhost:5000/',
+                bucketS3: 'https://s3-us-west-2.amazonaws.com/sima-data/',
+                recaptchaKey: '6LdWvSYTAAAAAGlwyWQIBxOTztkvcfRueKWhrZ7C'
+
+            },
+            production: {
+                apiUrl: 'http://172.31.27.249:5000/', //aws load balancer
+                bucketS3: 'https://s3-us-west-2.amazonaws.com/sima-data/',
+                recaptchaKey:'6LcTTycTAAAAAOyuM_m2ljzZf3E78_AHBLGp5Ofq'
+            }
+        }
+    });
+
+    // run the environment check, so the comprobation is made
+    // before controllers and services are built
+    envServiceProvider.check();
+}])
+.run(['$rootScope','envService',function($rootScope,envService){
+	
+	$rootScope.serviceUrl = envService.read('apiUrl');
 }])
 .run(['$rootScope', '$location',function($rootScope, $location){
 	$rootScope.$on('$routeChangeStart', function(){
