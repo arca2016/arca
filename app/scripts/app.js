@@ -48,7 +48,7 @@ angular
 
             },
             production: {
-                apiUrl: 'http://172.31.27.249:5000/', //aws load balancer
+                apiUrl: 'http://52.43.59.235:5000/', //aws load balancer
                 bucketS3: 'https://s3-us-west-2.amazonaws.com/sima-data/',
                 recaptchaKey:'6LcTTycTAAAAAOyuM_m2ljzZf3E78_AHBLGp5Ofq'
             }
