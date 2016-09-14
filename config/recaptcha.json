@@ -1,0 +1,10 @@
+{
+   
+  "development": {
+     "secret": "6LdWvSYTAAAAAIhbFRSWE3hGj9RnF8zFatLrRUjs"
+  },
+  "production": {
+     "secret":"6LcTTycTAAAAALVQtZYIPMmmWkl1EeABFe1Znehu"
+   }
+    
+}  

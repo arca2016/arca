@@ -1,0 +1,83 @@
+<div class="container-fluid">
+	<div class="headSIMA">    
+		<p align="center" class="lead" style="color: rgb(35, 82, 124);font-weight: bold;">Registro de contribuyentes</p>
+		
+	</div>
+	<form 	ng-submit="register(userInfo)">
+		<div class="headSIMA" style="background:rgba(200, 201, 208, 0.35);">
+			<label class="item item-input">
+				<span class="input-label">CURP* </span>
+				<input class="form-control" type="text" ng-model="userInfo.CURP">
+			</label>
+
+			<br>
+
+			<label class="item item-input">
+				<span class="input-label">Correo electronico* </span>
+				<input class="form-control" type="email" ng-model="userInfo.email">
+			</label>
+
+			<br>
+
+			<label class="item item-input">
+				<span class="input-label">Repetir el electronico* </span>
+				<input class="form-control" type="email" ng-model="userInfo.emailConfirm">
+			</label>
+
+			<br>
+
+			<label class="item item-input">
+				<span class="input-label">Contraseña* </span>
+				<input class="form-control" type="password" ng-model="userInfo.password">
+			</label>
+
+			<br>
+
+			<label class="item item-input">
+				<span class="input-label">Repita la contraseña* </span>
+				<input class="form-control" type="password" ng-model="userInfo.passwordConfirm">
+			</label>
+
+			<br>
+
+			<label class="item item-input">
+				<span class="input-label">Nombre* </span>
+				<input class="form-control" type="text" ng-model="userInfo.nombre">
+			</label>
+
+			<br>
+
+			<label class="item item-input">
+				<span class="input-label">A.Paterno </span>
+				<input class="form-control" type="text" ng-model="userInfo.apellidoPaterno">
+			</label>
+
+			<br>
+
+			<label class="item item-input">
+				<span class="input-label">A.Materno </span>
+				<input class="form-control" type="text" ng-model="userInfo.apellidoMaterno">
+			</label>
+
+			<br>
+
+			<label class="item item-input">
+				<span class="input-label">Telefono: </span>
+				<input class="form-control" type="text" ng-model="userInfo.telefono">
+			</label>
+
+			<br>
+
+				<label class="item item-input">					
+					<div vc-recaptcha theme="dark"  type="image" size="normal" ng-attr-key="recaptchaKey" ng-model="gRecaptchaResponse"></div>
+				</label>
+				
+
+			
+			<br>
+
+			<button style="background-color: #D50A2C; color: white;" class="round-button" type="submit"  >Registrar</button>
+		</div>
+
+	</form>
+</div>
