@@ -44,12 +44,41 @@ var Vehiculo = sequelize.define("Vehiculo", {
                 }); 
         },
         filtrar:function(filtro){
-            return Vehiculo.findAll({where:filtro});
+            return Vehiculo.findAll({
+	            	 where:filtro,
+	            	 include: [
+	          			 {model: sequelize.model('Viaje')}
+	          		 ]
+	          	});
+        },
+
+        buscarDisponibles:function(filtro,nuevaFechaInicio,nuevaFechaFin){
+        	return Vehiculo.filtrar(filtro).then(function(vehiculosAgencia){
+        		var vehiculosDisponibles = [], 
+        		vehiculo=[];
+        		for (var i = vehiculosAgencia.length - 1; i >= 0; i--) {
+        			 vehiculo = vehiculosAgencia[i]
+        			if(vehiculo.estaDisponible(nuevaFechaInicio,nuevaFechaFin)){
+        				vehiculosDisponibles.push(vehiculo);
+        			}
+        		}
+        		return vehiculosDisponibles;
+        	})
         }
         
      
 
 
+    },
+    instanceMethods:{
+        estaDisponible:function(nuevaFechaInicio,nuevaFechaFin){
+            for (var i = this.Viajes.length - 1; i >= 0; i--) {
+                if((this.Viajes[i].fechaInicio >= nuevaFechaInicio &&   this.Viajes[i].fechaInicio <= nuevaFechaFin) || (this.Viajes[i].fechaFin>= nuevaFechaInicio && this.Viajes[i].fechaFin<= nuevaFechaFin))
+                    return false;
+            }
+            return true;
+
+        },
     }
 
 

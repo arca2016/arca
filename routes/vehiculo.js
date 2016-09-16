@@ -47,6 +47,25 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 			})
 	
 })
+router.route('/buscarDisponibles') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
+.post(function(req,res) {
+	
+			var userDecoded = jwt.verify(req.cookies.auth, secret);
+
+			 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
+			 	var filtro = req.body.filtro;
+			 	filtro.AgenciumId = usuario.AgenciumId;
+
+				models.Vehiculo.buscarDisponibles(filtro,req.body.fechaInicio,req.body.fechaFin).then(function(result){
+					res.send(result)
+				},
+				function(err){
+					res.status(500);
+					res.send(err.message);
+				})
+			})
+	
+})
 .patch(function(req,res) {		
 				models.Vehiculo.actualizar(req.body.vehiculo).then(function(result){
 					res.send(result)
