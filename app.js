@@ -28,6 +28,50 @@ var initDatabaseParameters = function(){
    		return 	db.Usuario.createAdmin()   
    
 }
+var transformacionDeFechas = function(req,res,next){
+	if (req.body.viaje){
+		var viaje = req.body.viaje;
+		console.log(typeof viaje.fechaInicio);
+		console.log(typeof viaje.fechaFin);
+		if(viaje.fechaInicio){
+			if(typeof  viaje.fechaInicio == "number"){
+		 		viaje.fechaInicio = new Date(viaje.fechaInicio * 1000);
+		 	}
+		 	if(typeof  viaje.fechaInicio == "string"){
+		 		viaje.fechaInicio = new Date(viaje.fechaInicio);
+		 	}
+		}
+		if(viaje.fechaFin){
+			if(typeof viaje.fechaFin == "number"){
+                viaje.fechaFin = new Date(viaje.fechaFin * 1000);
+		 	}
+		 	if(typeof viaje.fechaFin == "string"){
+		 		viaje.fechaFin = new Date(viaje.fechaFin);
+		 	}
+		}
+
+	}
+	if(req.body.fechaInicio){
+	    var fechaInicio = req.body.fechaInicio;
+            if(typeof  fechaInicio == "number"){
+                req.body.fechaInicio = new Date(fechaInicio * 1000);
+            }
+            if(typeof  fechaInicio == "string"){
+                req.body.fechaInicio = new Date(fechaInicio);
+            }
+    }
+    if(req.body.fechaFin){
+        var fechaFin = req.body.fechaFin;
+        if(typeof fechaFin == "number"){
+            req.body.fechaFin = new Date(fechaFin * 1000);
+        }
+        if(typeof fechaFin == "string"){
+            req.body.fechaFin = new Date(fechaFin);
+        }
+    }
+	next();
+				
+}
 
 // Configuration
 	app.use(morgan('dev'));
@@ -36,6 +80,7 @@ var initDatabaseParameters = function(){
 	app.use(methodOverride());
     app.use(express.static(__dirname + '/app'));
     app.use(cookieParser('supersecret'));
+    app.use(transformacionDeFechas);
 
 
 
@@ -47,6 +92,8 @@ var initDatabaseParameters = function(){
 	    res.status(403).send('UnauthorizedError');
 	  }
 	});
+
+
 
 db.sequelize.sync().then(function(){
 	var port = process.env.PORT || 5000;

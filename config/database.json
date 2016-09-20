@@ -11,7 +11,7 @@
             "timestamps": true,
             "paranoid": true
         },
-        "logging": false
+        "logging": true
     },
     "port":3000
   },

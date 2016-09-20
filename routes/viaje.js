@@ -18,9 +18,7 @@ var models = require('./../models');
 router.route('/')
 .post(function(req,res) {
 	var userDecoded = jwt.verify(req.cookies.auth, secret);
-	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
-	 	
-			
+	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){	 			
 				models.Viaje.crear(usuario,req.body.viaje).then(function(result){
 					res.send(result)
 				},
@@ -35,7 +33,26 @@ router.route('/')
 
 	
 })
+router.route('/recurrente')
+.post(function(req,res) {
+	var userDecoded = jwt.verify(req.cookies.auth, secret);
+	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
+	 	
+			
+				models.Viaje.crearRecurrente(usuario,req.body.vehiculoId,req.body.fechaInicio,req.body.fechaFin,req.body.tiempoDeViaje,req.body.incluyeFestivos,req.body.diasDeLaSemana).then(function(result){
+					res.send(result)
+				},
+				function(err){
+					res.status(500);
+					res.send(err)
+				})
+			
+		
+		})
+	
 
+	
+})
 
 
 module.exports = router;

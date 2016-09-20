@@ -72,7 +72,8 @@ var Vehiculo = sequelize.define("Vehiculo", {
     },
     instanceMethods:{
         estaDisponible:function(nuevaFechaInicio,nuevaFechaFin){
-            for (var i = this.Viajes.length - 1; i >= 0; i--) {
+
+           for (var i = this.Viajes.length - 1; i >= 0; i--) {
                 if((this.Viajes[i].fechaInicio >= nuevaFechaInicio &&   this.Viajes[i].fechaInicio <= nuevaFechaFin) || (this.Viajes[i].fechaFin>= nuevaFechaInicio && this.Viajes[i].fechaFin<= nuevaFechaFin))
                     return false;
             }
