@@ -36,46 +36,55 @@ var Viaje = sequelize.define("Viaje", {
             })          
         },
         crearRecurrente: function(usuario,vehiculoId,fechaInicio,fechaFin,tiempoDeViaje,incluyeFestivos,diasDeLaSemana){
-        
-        
-         return   sequelize.model("Vehiculo").filtrar({id:vehiculoId}).then(function(vehiculo){ //busco el vehiculo
+
+        var listaViajesPromesa = []
+        return  sequelize.model("Vehiculo").filtrar({id:vehiculoId}).then(function(vehiculo){ //busco el vehiculo
             vehiculo = vehiculo[0]
-             return   sequelize.model("DiaFestivo").listDiaFestivo().then(function(festivos){ // listo los festivos
+         return  sequelize.model("DiaFestivo").listDiaFestivo().then(function(festivos){ // listo los festivos
                     var fechaAEvaluar = fechaInicio;
-                    while(fechaAEvaluar.toDateString()!= fechaFin.toDateString()){                     
-                        if(diasDeLaSemana.indexOf(fechaAEvaluar.getDay()) > 0){ // si la reserva se trabaja ese dia                           
-                           sequelize.model("DiaFestivo").esDiaFestivo(fechaAEvaluar,festivos).then(function(esFestivo){
+                   while(fechaAEvaluar.toDateString()!= fechaFin.toDateString()){
+
+                        if(diasDeLaSemana.indexOf(fechaAEvaluar.getDay()) >= 0){ // si la reserva se trabaja ese dia
+                            console.log(`A evaluar si es festivo ${fechaAEvaluar}`);
+
+                          listaViajesPromesa.push( sequelize.model("DiaFestivo").esDiaFestivo(fechaAEvaluar,festivos).then(function(esFestivo){
                                
                                 if(!esFestivo.result ||(esFestivo.result&& incluyeFestivos) ) { // si no es festivo o si trabaja los festivos
                                     var fechaAEvaluar= esFestivo.dia;
                                     var fechaFinalViaje = new Date(fechaAEvaluar.getTime());
                                     fechaFinalViaje.setSeconds(fechaFinalViaje.getSeconds()+tiempoDeViaje);
                                    if(vehiculo.estaDisponible(fechaAEvaluar,fechaFinalViaje)){// si esta disponible en esa fecha
-                                    Viaje.crear(usuario,{fechaInicio:fechaAEvaluar,fechaFin:fechaFinalViaje,origen:"aca",destino:"alla","VehiculoId":vehiculoId}).then(function(v){
-                                        console.log("reserva creada")
-                                    })
-                                    
-                                     
+                                    console.log(`viaje anandido para la creacion ${fechaAEvaluar}`);
+                                   return {UsuarioId:usuario.id,fechaInicio:fechaAEvaluar,fechaFin:fechaFinalViaje,origen:"aca",destino:"alla","VehiculoId":vehiculoId};
                                    }
                                    else{
                                     console.log("no esta disponible para la fecha " + fechaAEvaluar);
+                                    throw Error("No esta disponible");
                                    } 
                                 }
                                 else{
                                     console.log("esta fecha no es habil y no traba los festivos " + fechaAEvaluar);
                                 }
 
-                            })
+                            }))
                         }
+                        console.log("current time " +fechaAEvaluar.getTime());
                         fechaAEvaluar = new Date(fechaAEvaluar.setDate(fechaAEvaluar.getDate()+1)); // avanzo hacia el siguiente dia
 
                     }
-
+                  return Promise.all(listaViajesPromesa).then(function (viajes) {
+                       Viaje.bulkCreate(viajes).then(function(result) {
+                       return(result)
+                       })
+                   })
                 })
 
- 
+
+
+
             }).catch(function(err){
-            console.dir(err)
+            console.dir(err.message)
+            return err.message;
          })
         }
 
