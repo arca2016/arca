@@ -45,7 +45,6 @@ var Viaje = sequelize.define("Viaje", {
                    while(fechaAEvaluar.toDateString()!= fechaFin.toDateString()){
 
                         if(diasDeLaSemana.indexOf(fechaAEvaluar.getDay()) >= 0){ // si la reserva se trabaja ese dia
-                            console.log(`A evaluar si es festivo ${fechaAEvaluar}`);
 
                           listaViajesPromesa.push( sequelize.model("DiaFestivo").esDiaFestivo(fechaAEvaluar,festivos).then(function(esFestivo){
                                
@@ -54,7 +53,6 @@ var Viaje = sequelize.define("Viaje", {
                                     var fechaFinalViaje = new Date(fechaAEvaluar.getTime());
                                     fechaFinalViaje.setSeconds(fechaFinalViaje.getSeconds()+tiempoDeViaje);
                                    if(vehiculo.estaDisponible(fechaAEvaluar,fechaFinalViaje)){// si esta disponible en esa fecha
-                                    console.log(`viaje anandido para la creacion ${fechaAEvaluar}`);
                                    return {UsuarioId:usuario.id,fechaInicio:fechaAEvaluar,fechaFin:fechaFinalViaje,origen:"aca",destino:"alla","VehiculoId":vehiculoId};
                                    }
                                    else{
@@ -68,12 +66,12 @@ var Viaje = sequelize.define("Viaje", {
 
                             }))
                         }
-                        console.log("current time " +fechaAEvaluar.getTime());
+
                         fechaAEvaluar = new Date(fechaAEvaluar.setDate(fechaAEvaluar.getDate()+1)); // avanzo hacia el siguiente dia
 
                     }
                   return Promise.all(listaViajesPromesa).then(function (viajes) {
-                       Viaje.bulkCreate(viajes).then(function(result) {
+                    return  Viaje.bulkCreate(viajes).then(function(result) {
                        return(result)
                        })
                    })

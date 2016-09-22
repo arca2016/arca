@@ -60,7 +60,7 @@ module.exports = function(sequelize, DataTypes) {
 		    			diasFestivos = diasFestivos;
 		    			for (var i = diasFestivos.length - 1; i >= 0; i--) {
 				    			if(diasFestivos[i].toDateString() === dia.toDateString()){
-									console.log(dia);
+
 				    				deferred.resolve({dia:dia,result:true})
 				    			}		    			
 				    	}
@@ -68,14 +68,14 @@ module.exports = function(sequelize, DataTypes) {
 		    	}else{
 		    		for (var i = diasFestivos.length - 1; i >= 0; i--) {
 				    			if(diasFestivos[i].toDateString() === dia.toDateString()){
-				    				console.log(dia);
+
 				    				deferred.resolve({dia:dia,result:true})
 				    			}		    			
 				    	}
 		    	}
 
 
-                console.log(`evaluado, ${dia}!`);
+
 
 		    	deferred.resolve({dia:dia,result:false});
 
