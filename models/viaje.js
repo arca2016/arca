@@ -3,7 +3,7 @@
 var models  = require(__dirname);
 var Q = require('q')
 var Promise = require("bluebird");
-
+var uuid = require('uuid-v4');
 
 module.exports = function(sequelize, DataTypes) {
     var Viaje = sequelize.define("Viaje", {
@@ -11,7 +11,9 @@ module.exports = function(sequelize, DataTypes) {
         fechaInicio:DataTypes.DATE,
         fechaFin:DataTypes.DATE,
         origen:DataTypes.STRING,
-        destino:DataTypes.STRING
+        destino:DataTypes.STRING,
+        descripcion:DataTypes.STRING,
+        recurrenteId:DataTypes.STRING
 
     }, {
         classMethods: {
@@ -37,6 +39,7 @@ module.exports = function(sequelize, DataTypes) {
                 })
             },
             crearRecurrente: function(usuario,vehiculoId,fechaInicio,fechaFin,tiempoDeViaje,incluyeFestivos,diasDeLaSemana){
+            	var recurrenteId = uuid();
 
                 var listaViajesPromesa = []
                 return  sequelize.model("Vehiculo").filtrar({id:vehiculoId}).then(function(vehiculo){ //busco el vehiculo
@@ -58,7 +61,7 @@ module.exports = function(sequelize, DataTypes) {
                                      var fechaFinalViaje = new Date(fechaInicioViaje.getTime());
                                      fechaFinalViaje.setSeconds(fechaFinalViaje.getSeconds()+tiempoDeViaje);
                                      if(vehiculo.estaDisponible(fechaInicioViaje,fechaFinalViaje)){// si esta disponible en esa fecha
-                                     return {UsuarioId:usuario.id,fechaInicio:esFestivo.dia,fechaFin:fechaFinalViaje,origen:"aca",destino:"alla","VehiculoId":vehiculoId};
+                                     return {UsuarioId:usuario.id,fechaInicio:esFestivo.dia,fechaFin:fechaFinalViaje,origen:"aca",destino:"alla","VehiculoId":vehiculoId,recurrenteId:recurrenteId};
                                      }
                                      else{
                                          throw Error("No esta disponible para la fecha " + fechaInicioViaje);
