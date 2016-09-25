@@ -69,6 +69,15 @@ var transformacionDeFechas = function(req,res,next){
             req.body.fechaFin = new Date(fechaFin);
         }
     }
+    if(req.body.fecha){
+        var fecha = req.body.fecha;
+        if(typeof fecha == "number"){
+            req.body.fecha = new Date(fecha * 1000);
+        }
+        if(typeof fecha == "string"){
+            req.body.fecha = new Date(fecha);
+        }
+    }
 	next();
 				
 }
@@ -107,6 +116,7 @@ db.sequelize.sync().then(function(){
 		var agencia = 	 require('./routes/agencia');
 		var vehiculo = 	 require('./routes/vehiculo');
 		var viaje = 	 require('./routes/viaje');
+		var diaFestivo = 	 require('./routes/diaFestivo');
 		}
 		catch(err){
 			console.log("Error cargando las rutas");
@@ -115,6 +125,7 @@ db.sequelize.sync().then(function(){
 		app.use('/auth',auth);
 		app.use('/agencia',agencia);
 		app.use('/vehiculo',vehiculo);
+		app.use('/diaFestivo',diaFestivo);
 		app.use('/viaje',viaje);
 	})
 	

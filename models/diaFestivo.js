@@ -46,6 +46,7 @@ module.exports = function(sequelize, DataTypes) {
 		     	return  DiaFestivo.build(diaFestivo).save();	      
 		    },
 		    esDiaFestivo:function(dia,diasFestivos){
+		        var esFestivo = false;
 		    	 var deferred = Q.defer()
 
 		    	if(typeof dia ==  "number"){
@@ -55,29 +56,33 @@ module.exports = function(sequelize, DataTypes) {
 					dia = new Date(dia);
 				}
 
-		    	if(!diasFestivos){
-		    		 DiaFestivo.listDiaFestivo(dia).then(function(diasFestivos){
-		    			diasFestivos = diasFestivos;
-		    			for (var i = diasFestivos.length - 1; i >= 0; i--) {
-				    			if(diasFestivos[i].toDateString() === dia.toDateString()){
+                if(diasFestivos) {
+                    DiaFestivo.listDiaFestivo(dia).then(function (diasFestivos) {
+                        diasFestivos = diasFestivos;
+                        for (var i = diasFestivos.length - 1; i >= 0; i--) {
+                            if (diasFestivos[i].fecha.toDateString() === dia.toDateString()) {
+                                esFestivo = true;
 
-				    				deferred.resolve({dia:dia,result:true})
-				    			}		    			
-				    	}
-		    		})
-		    	}else{
+                            }
+                        }
+                        deferred.resolve({dia: dia, result: esFestivo})
+                    })
+                }
+		    	else{
 		    		for (var i = diasFestivos.length - 1; i >= 0; i--) {
-				    			if(diasFestivos[i].toDateString() === dia.toDateString()){
 
-				    				deferred.resolve({dia:dia,result:true})
+				    			if(diasFestivos[i].fecha.toDateString() === dia.toDateString()){
+                                    esFestivo = true;
+				    				resolve({dia:dia,result:esFestivo})
 				    			}		    			
 				    	}
+                    deferred.resolve({dia:dia,result:esFestivo});
 		    	}
 
 
 
 
-		    	deferred.resolve({dia:dia,result:false});
+
 
 		    	 return deferred.promise
 		    	
