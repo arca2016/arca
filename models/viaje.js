@@ -31,10 +31,25 @@ module.exports = function(sequelize, DataTypes) {
             crear: function(usuario,viaje){
                 console.dir(viaje);
                 return sequelize.model("Vehiculo").getById(viaje.VehiculoId).then(function(vehiculo){
-                    if(usuario.AgenciumId != vehiculo.AgenciumId){
-                        throw "Error, intento de violacion a la integridad del sistema, sera reportado";
-                    }
-                    return Viaje.build(viaje).save();
+
+                    return vehiculo.getViajes().then(function (viajes) {
+
+
+                            vehiculo.Viajes = viajes;
+                            if(usuario.AgenciumId != vehiculo.AgenciumId){
+                                throw "Error, intento de violacion a la integridad del sistema, sera reportado";
+                            }
+                            if(vehiculo.estaDisponible(viaje.fechaInicio,viaje.fechaFin)){
+                                return Viaje.build(viaje).save();
+                            }
+                            else{
+                                throw Error("Vehiculo no disponible en el rango de fechas dado");
+                            }
+                        })
+
+
+
+
 
                 })
             },

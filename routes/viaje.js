@@ -24,7 +24,7 @@ router.route('/')
 				},
 				function(err){
 					res.status(500);
-					res.send(err)
+					res.send(err.message)
 				})
 			
 		
