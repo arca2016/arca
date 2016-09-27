@@ -87,7 +87,7 @@ var transformacionDeFechas = function(req,res,next){
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: false }));
 	app.use(methodOverride());
-    app.use(express.static(__dirname + '/app'));
+    app.use(express.static(__dirname + '/ArcaDashboard/release'));
     app.use(cookieParser('supersecret'));
     app.use(transformacionDeFechas);
 
@@ -105,7 +105,7 @@ var transformacionDeFechas = function(req,res,next){
 
 
 db.sequelize.sync().then(function(){
-	var port = process.env.PORT || 5000;
+	var port = process.env.PORT || 3000;
 
 	initDatabaseParameters().then(function(){
 		app.listen(port, function() {
