@@ -18,7 +18,9 @@ var models = require('./../models');
 router.route('/')
 .post(function(req,res) {
 	
-	
+			var userDecoded = jwt.verify(req.cookies.auth, secret);
+			models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
+				req.body.vehiculo.AgenciumId = usuario.AgenciumId;
 				models.Vehiculo.crear(req.body.vehiculo).then(function(result){
 					res.send(result)
 				},
@@ -26,7 +28,7 @@ router.route('/')
 					res.status(500);
 					res.send(err.message);
 				})
-	
+			})
 })
 router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
 .post(function(req,res) {
@@ -34,10 +36,12 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 			var userDecoded = jwt.verify(req.cookies.auth, secret);
 
 			 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
-			 	var filtro = req.body.filtro;
+			 	var filtro = {}|| req.body.filtro;
+			 
 			 	filtro.AgenciumId = usuario.AgenciumId;
 
 				models.Vehiculo.filtrar(filtro).then(function(result){
+					console.dir(result);
 					res.send(result)
 				},
 				function(err){
