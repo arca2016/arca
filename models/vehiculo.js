@@ -17,7 +17,8 @@ var Vehiculo = sequelize.define("Vehiculo", {
     reclinable:DataTypes.BOOLEAN,
     imagen:DataTypes.STRING,
     marca:DataTypes.STRING,
-    referencia:DataTypes.STRING
+    referencia:DataTypes.STRING,
+    uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1}
     
 
 }, {
@@ -34,17 +35,28 @@ var Vehiculo = sequelize.define("Vehiculo", {
             return Vehiculo.findById(id);
         },
         crear: function(vehiculo){
+            vehiculo.placa = vehiculo.placa.toUpperCase();
             return Vehiculo.build(vehiculo).save();
         },
         actualizar:function(vehiculo){
              return Vehiculo.update(vehiculo,{
                   where:{
-                    id:vehiculo.id
+                    uuid:vehiculo.uuid
+                  }
+                }); 
+        },
+        getByUUID:function(uuid){
+             return Vehiculo.findOne({
+                  where:{
+                    uuid:uuid
                   }
                 }); 
         },
         filtrar:function(filtro){
             return Vehiculo.findAll({
+                     order: [
+                        ['id', 'DESC']
+                    ],
 	            	 where:filtro,
 	            	 include: [
 	          			 {model: sequelize.model('Viaje')}

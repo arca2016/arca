@@ -51,6 +51,28 @@ var transformacionDeFechas = function(req,res,next){
 		}
 
 	}
+	if (req.body.filtro){
+		var filtro = req.body.filtro;
+		console.log(typeof filtro.fechaInicio);
+		console.log(typeof filtro.fechaFin);
+		if(filtro.fechaInicio){
+			if(typeof  filtro.fechaInicio == "number"){
+		 		filtro.fechaInicio = new Date(filtro.fechaInicio * 1000);
+		 	}
+		 	if(typeof  filtro.fechaInicio == "string"){
+		 		filtro.fechaInicio = new Date(filtro.fechaInicio);
+		 	}
+		}
+		if(filtro.fechaFin){
+			if(typeof filtro.fechaFin == "number"){
+                filtro.fechaFin = new Date(filtro.fechaFin * 1000);
+		 	}
+		 	if(typeof filtro.fechaFin == "string"){
+		 		filtro.fechaFin = new Date(filtro.fechaFin);
+		 	}
+		}
+
+	}
 	if(req.body.fechaInicio){
 	    var fechaInicio = req.body.fechaInicio;
             if(typeof  fechaInicio == "number"){
