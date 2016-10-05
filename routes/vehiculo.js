@@ -14,7 +14,6 @@ var jwt = require('jsonwebtoken');
 var models = require('./../models');
 
 
-
 router.route('/')
 .post(function(req,res) {
 	
@@ -65,11 +64,23 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 			 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 			 	var filtro =  req.body.filtro || {};
 
+			 	for(var k in filtro){
+   					if(!filtro[k]) delete filtro[k];
+   				}
+
+
+				 if(filtro.capacidad){
+					 filtro.capacidad ={
+						 $gte:filtro.capacidad
+					 }
+				 }
 			 	if(filtro.fechaInicio && filtro.fechaFin){
 			 		var nuevaFechaInicio = filtro.fechaInicio,
 			 		nuevaFechaFin = filtro.fechaFin;
 			 		delete filtro.fechaInicio;
 			 		delete filtro.fechaFin
+
+			
 
 			 		models.Vehiculo.buscarDisponibles(filtro,nuevaFechaInicio,nuevaFechaFin).then(function(result){
 					res.send(result)
