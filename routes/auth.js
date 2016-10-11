@@ -54,6 +54,64 @@ router.route('/chkLoggedIn')
 	res.send("logueado");
 });
 
+router.route('/crearUsuario')
+.post(function(req, res) {
+	var nuevoUsuario = req.body.usuario;
+	var userDecoded = jwt.verify(req.cookies.auth, secret);
+	var nuevoRol = nuevoUsuario.rol;
+	var rolCreador = userDecoded.rol
+	var puedeCrear = true
+	
+	if(rolCreador=='gerente'&&(nuevoRol=='admin')){
+		//no puede crear
+		puedeCrear = false;
+	}
+	if(rolCreador== 'despachador' && (nuevoRol!='cliente'&& nuevoRol!='conductor')){
+		// no puede crear
+		puedeCrear = false;
+	}
+	if(rolCreador=='cliente'||rolCreador=='conductor'){
+		// no puede crear
+		puedeCrear = false;
+	}
+	if(nuevoRol != 'gerente'&& nuevoRol != 'despachador'&& nuevoRol != 'cliente'&& nuevoRol != 'conductor'){
+		puedeCrear = false
+	}
+	if(puedeCrear){
+
+		pass.hash(nuevoUsuario.password, function (err, salt, hash) {
+		if (err) {
+			res.status(500);
+			res.send(err);
+		}
+			nuevoUsuario.salt = salt;
+			nuevoUsuario.hash = hash;
+		var usr = usuario.build(nuevoUsuario).save().then(function (result) {
+			var result = {
+				id: result.get('id'),
+				username: result.get('username')
+			};
+
+			res.send(result);
+		}).catch(function (error) {
+			console.dir(error)
+			if (error.name == 'SequelizeUniqueConstraintError') {
+				res.status(409);
+				res.send(error);
+			}
+		})
+
+
+	});
+	}
+	else{
+		res.status(412);
+		res.send("Error de permisos");
+		return;
+	}
+
+});
+
 router.route('/logout')
 .post(function(req, res) {
 	if(req.user){
@@ -73,7 +131,7 @@ router.route('/register')
 		return;
 	}
 	var usuarioInfo = req.body.usuario;
-usuario.getUsuario(usuarioInfo.cedula).then(function(usuarioResult){
+	usuario.getUsuario(usuarioInfo.cedula).then(function(usuarioResult){
 
 	if(usuarioResult){// ya hay un usuario registrado
 		res.status(412);

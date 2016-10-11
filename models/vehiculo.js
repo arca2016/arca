@@ -15,6 +15,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
     aire:DataTypes.BOOLEAN,
     bano:DataTypes.BOOLEAN,
     reclinable:DataTypes.BOOLEAN,
+    wifi:DataTypes.BOOLEAN,
     imagen:DataTypes.STRING,
     marca:DataTypes.STRING,
     referencia:DataTypes.STRING,
@@ -27,7 +28,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
         associate: function(models) {
             Vehiculo.hasMany(models.Documento);
             Vehiculo.hasMany(models.Viaje);
-            Vehiculo.hasOne(models.Usuario);
+            Vehiculo.hasOne(models.Usuario,{as: 'Conductor'});
 
 
         },

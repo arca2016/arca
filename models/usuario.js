@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     rol:{              
       type:   DataTypes.ENUM,
-      values: ["admin","gerente","despachador","cliente"]
+      values: ["admin","gerente","despachador","cliente","conductor"]
     },
 
     telefono: DataTypes.STRING,
