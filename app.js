@@ -116,7 +116,7 @@ var transformacionDeFechas = function(req,res,next){
 
 
 
-	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/auth/register']}));
+	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
 
 	app.use(function(err, req, res, next) {
 	  if (err.name === 'UnauthorizedError') {

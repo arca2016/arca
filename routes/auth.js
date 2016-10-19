@@ -10,7 +10,33 @@ var request = require('request')
 var mime = require('mime');
 var secret = 'supersecret';
 var recaptcha = require('../config/recaptcha.json')[process.env.NODE_ENV];
+var aws = require('aws-sdk');
+var awsConfig = require('../config/aws.json')
+aws.config = new aws.Config(awsConfig);
 
+router.route('/getSignedURL/:fileName') 
+.get(function(req, res) {
+
+
+		console.dir(aws.config)
+		// ---------------------------------
+		// now say you want fetch a URL for an object named `objectName`
+		var s3 = new aws.S3();
+		var contentType = mime.lookup(req.params.fileName);
+		var s3_params = {
+			Bucket: "arca",
+			Key: req.params.fileName,
+			Expires: 120,
+			ACL: 'public-read',
+			Body: '',
+			ContentType: contentType
+		};
+		s3.getSignedUrl('putObject', s3_params, function (err, signedUrl) {
+			res.send({url:signedUrl,contentType:contentType});
+		});
+
+
+	})
 router.route('/login')
 .post(function(req, res) {
 	usuario.getUsuario(req.body.usuario).then(function(usuarioResult){

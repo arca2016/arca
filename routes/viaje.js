@@ -18,12 +18,14 @@ var models = require('./../models');
 router.route('/')
 .post(function(req,res) {
 	var userDecoded = jwt.verify(req.cookies.auth, secret);
-	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){	 			
+	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){	 
+	 console.dir(req.body.viaje)			
 				models.Viaje.crear(usuario,req.body.viaje).then(function(result){
 					res.send(result)
 				},
 				function(err){
 					res.status(500);
+					console.dir(err.message)
 					res.send(err.message)
 				})
 			
