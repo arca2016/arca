@@ -16,7 +16,7 @@ var models = require('./../models');
 
 router.route('/')
 .post(function(req,res) {
-	
+
 			var userDecoded = jwt.verify(req.cookies.auth, secret);
 			models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 				req.body.vehiculo.AgenciumId = usuario.AgenciumId;
@@ -29,18 +29,20 @@ router.route('/')
 				})
 			})
 })
-.patch(function(req,res) {		
+
+.patch(function(req,res) {
 				models.Vehiculo.actualizar(req.body.vehiculo).then(function(result){
 					res.send(result)
 				},
 				function(err){
 					res.status(500);
 					res.send(err.message);
-				})	
+				})
 })
+router.route('/:uuid')
 .delete(function(req,res){
-	
-		models.Vehiculo.getByUUID(req.body.uuid)
+
+		models.Vehiculo.getByUUID(req.params.uuid)
 		.then(function(vehiculo){
 			if(!vehiculo){
 				res.status = 404;
@@ -58,7 +60,7 @@ router.route('/')
 
 router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
 .post(function(req,res) {
-	
+
 			var userDecoded = jwt.verify(req.cookies.auth, secret);
 
 			 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
@@ -80,7 +82,7 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 			 		delete filtro.fechaInicio;
 			 		delete filtro.fechaFin
 
-			
+
 
 			 		models.Vehiculo.buscarDisponibles(filtro,nuevaFechaInicio,nuevaFechaFin).then(function(result){
 					res.send(result)
@@ -91,7 +93,7 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 					})
 			 	}
 			 	else{
-			 
+
 				 	filtro.AgenciumId = usuario.AgenciumId;
 					models.Vehiculo.filtrar(filtro).then(function(result){
 						res.send(result)
@@ -102,7 +104,7 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 					})
 				}
 			})
-	
+
 })
 
 
