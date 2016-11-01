@@ -116,7 +116,7 @@ var transformacionDeFechas = function(req,res,next){
 
 
 
-	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
+	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/auth/logout','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
 
 	app.use(function(err, req, res, next) {
 	  if (err.name === 'UnauthorizedError') {
@@ -139,6 +139,8 @@ db.sequelize.sync().then(function(){
 		var vehiculo = 	 require('./routes/vehiculo');
 		var viaje = 	 require('./routes/viaje');
 		var diaFestivo = 	 require('./routes/diaFestivo');
+		var marca = 	 require('./routes/marca');
+		var referencia = 	 require('./routes/referencia');
 		}
 		catch(err){
 			console.log("Error cargando las rutas");
@@ -149,6 +151,8 @@ db.sequelize.sync().then(function(){
 		app.use('/vehiculo',vehiculo);
 		app.use('/diaFestivo',diaFestivo);
 		app.use('/viaje',viaje);
+		app.use('/marca',marca);
+		app.use('/referencia',referencia);
 	})
 	
 })
