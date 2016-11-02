@@ -50,7 +50,7 @@ router.route('/login')
 				if (usuarioResult.hash == hash) {
 
 					var result = usuarioResult.get();
-					var tokenInfo = {id: result.id, rol: result.rol}
+					var tokenInfo = {id: result.id, rol: result.rol,AgenciumId:result.AgenciumId}
 					delete result.hash;
 					delete result.salt;					
 					var resultToken = JSON.parse(JSON.stringify(tokenInfo));;
@@ -85,8 +85,9 @@ router.route('/crearUsuario')
 	var nuevoUsuario = req.body.usuario;
 	var userDecoded = jwt.verify(req.cookies.auth, secret);
 	var nuevoRol = nuevoUsuario.rol;
-	var rolCreador = userDecoded.rol
-	var puedeCrear = true
+	var rolCreador = userDecoded.rol;
+	var puedeCrear = true;
+	nuevoUsuario.AgenciumId = req.usuario.AgenciumId;
 	
 	if(rolCreador=='gerente'&&(nuevoRol=='admin')){
 		//no puede crear
@@ -112,12 +113,7 @@ router.route('/crearUsuario')
 		}
 			nuevoUsuario.salt = salt;
 			nuevoUsuario.hash = hash;
-		var usr = usuario.build(nuevoUsuario).save().then(function (result) {
-			var result = {
-				id: result.get('id'),
-				username: result.get('username')
-			};
-
+		var usr = usuario.build(nuevoUsuario).save().then(function (result) {			
 			res.send(result);
 		}).catch(function (error) {
 			console.dir(error)

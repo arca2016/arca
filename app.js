@@ -7,19 +7,32 @@ var db             = require('./models');
 var config         = require('./config/database.json')[process.env.NODE_ENV];
 var cookieParser   = require('cookie-parser');
 var jwt            = require('express-jwt');
+var jsonwebtoken   = require('jsonwebtoken');
 var multiparty 	   = require('connect-multiparty');
 var i18n 		   = require('i18n'); 
 var app 		   = express();
+var secret         = 'supersecret'
 var authenticate   = jwt({
-  secret: 'supersecret',
+  secret: secret,
   getToken: function fromHeaderOrCookie(req) {
+  	try{
+  			var token = null;
+		    if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {//detects if the token comes from header or cookie
+		      token = req.headers.authorization.split(' ')[1];
+		    } else if(req.cookies && req.cookies.auth) {
+		      token = req.cookies.auth;
+		    }
+		    if(token) {
+		        console.dir(jsonwebtoken.verify(token, secret))
+		      req.usuario = jsonwebtoken.verify(token, secret);
 
-  	if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {//detects if the token comes from header or cookie
-      return req.headers.authorization.split(' ')[1];
-    } else if(req.cookies && req.cookies.auth) {
-      return req.cookies.auth;
-    }
-    return null;
+		    }
+		    return token;
+  	}
+  	catch(err){
+  			 console.dir(err)
+  	}
+  	
   }
 });
 
@@ -138,9 +151,10 @@ db.sequelize.sync().then(function(){
 		var agencia = 	 require('./routes/agencia');
 		var vehiculo = 	 require('./routes/vehiculo');
 		var viaje = 	 require('./routes/viaje');
-		var diaFestivo = 	 require('./routes/diaFestivo');
+		var diaFestivo = require('./routes/diaFestivo');
 		var marca = 	 require('./routes/marca');
-		var referencia = 	 require('./routes/referencia');
+		var referencia = require('./routes/referencia');
+		var usuario = 	 require('./routes/usuario');
 		}
 		catch(err){
 			console.log("Error cargando las rutas");
@@ -153,6 +167,7 @@ db.sequelize.sync().then(function(){
 		app.use('/viaje',viaje);
 		app.use('/marca',marca);
 		app.use('/referencia',referencia);
+		app.use('/usuario',usuario);
 	})
 	
 })

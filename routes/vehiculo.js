@@ -10,7 +10,6 @@ var request = require('request')
 var mime = require('mime');
 var secret = 'supersecret';
 var recaptcha = require('../config/recaptcha.json')[process.env.NODE_ENV];
-var jwt = require('jsonwebtoken');
 var models = require('./../models');
 
 

@@ -60,8 +60,8 @@ module.exports = function(sequelize, DataTypes) {
       return Usuario.findAll({
         attributes:  { exclude: ['updatedAt','createdAt','hash','salt'] },
         where:{  
-          rol:  { $ne: cliente  },
-          agencia: agencia
+          rol:  { $ne: 'cliente'  },
+          AgenciumId: agencia
         }
       });   
     },
