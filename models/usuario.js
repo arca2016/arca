@@ -11,9 +11,7 @@ module.exports = function(sequelize, DataTypes) {
     cedula: {type: DataTypes.STRING, unique: true},
     hash: DataTypes.STRING,
     salt: DataTypes.STRING,
-    nombre: DataTypes.STRING,
-    apellidoPaterno: DataTypes.STRING,
-    apellidoMaterno: DataTypes.STRING,
+    nombre: DataTypes.STRING,   
     genero:{              
       type:   DataTypes.ENUM,
       values: ['M', 'F']
@@ -32,13 +30,14 @@ module.exports = function(sequelize, DataTypes) {
     telefono: DataTypes.STRING,
     activo:{type:DataTypes.BOOLEAN, defaultValue: true},
     email: {type: DataTypes.STRING},
-    foto: {type: DataTypes.STRING}
+    foto: {type: DataTypes.STRING},
+    uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1}
   },
   {
     classMethods: {
       associate: function(models) {
        Usuario.belongsTo(models.Agencia, { onDelete: 'cascade' }),{ foreignKey: { allowNull: true }};
-       Usuario.belongsTo(models.Vehiculo, { onDelete: 'cascade' }),{ foreignKey: { allowNull: true }};
+       Usuario.hasOne(models.Vehiculo)
        Usuario.hasMany(models.Documento, { onDelete: 'cascade' },{ foreignKey: { allowNull: false }});
        
      },
@@ -55,12 +54,12 @@ module.exports = function(sequelize, DataTypes) {
 
       });   
     },
-    listEmpleados: function(agencia) { 
-
+    listEmpleados: function(agencia,rol) { 
+      var rol = rol || { $ne: 'cliente'  }
       return Usuario.findAll({
         attributes:  { exclude: ['updatedAt','createdAt','hash','salt'] },
         where:{  
-          rol:  { $ne: 'cliente'  },
+          rol:  rol,
           AgenciumId: agencia
         }
       });   
@@ -79,6 +78,13 @@ module.exports = function(sequelize, DataTypes) {
         }
       });   
     },
+    actualizar:function(usuario){
+             return Usuario.update(usuario,{
+                  where:{
+                    uuid:usuario.uuid
+                  }
+                }); 
+        },
       
       
       getUsuarioPorId: function(user) { 

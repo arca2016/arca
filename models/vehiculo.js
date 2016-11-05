@@ -28,7 +28,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
         associate: function(models) {
             Vehiculo.hasMany(models.Documento);
             Vehiculo.hasMany(models.Viaje);
-            Vehiculo.hasOne(models.Usuario,{as: 'Conductor'});
+            Vehiculo.belongsTo(models.Usuario, { onDelete: 'cascade' }),{ foreignKey: { allowNull: true }};
 
 
         },
@@ -60,7 +60,8 @@ var Vehiculo = sequelize.define("Vehiculo", {
                     ],
 	            	 where:filtro,
 	            	 include: [
-	          			 {model: sequelize.model('Viaje')}
+	          			 {model: sequelize.model('Viaje')},
+                         {model: sequelize.model('Usuario')}
 	          		 ]
 	          	});
         },

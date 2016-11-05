@@ -15,6 +15,29 @@ router.route('/')
 			})
 			
 	})
+router.route('/:rol') 
+.get(function(req, res) {					
+			Usuario.getUsuarioPorId(req.usuario.id).then(function(usuario){
+				Usuario.listEmpleados(usuario.AgenciumId,req.params.rol).then(function(result){
+						res.send(result)
+				})
+
+			},function(err){
+				    res.status(500)
+					res.send(err)
+			})
+			
+	})
+router.route('/') 
+.patch(function(req,res) {
+				Usuario.actualizar(req.body.usuario).then(function(result){
+					res.send(result)
+				},
+				function(err){
+					res.status(500);
+					res.send(err.message);
+				})
+})
 
 
 module.exports = router;
