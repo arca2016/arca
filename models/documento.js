@@ -28,11 +28,11 @@ var Documento = sequelize.define("Documento", {
               }
             }); 
         },
-        guardar: function(documento){
+        crear: function(documento){
 
             return Documento.create(documento);
         },
-        guardar: function(documento){
+        actualizar: function(documento){
 
            return Documento.update(documento,{
                   where:{
