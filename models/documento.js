@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
 var Documento = sequelize.define("Documento", {
     deletedAt: DataTypes.DATE, 
     imagen:DataTypes.STRING,
-    fechaExpiracion: DataTypes.DATE
+    fechaExpiracion: DataTypes.DATE,
+    uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1}
 
 }, {
     classMethods: {
@@ -19,6 +20,25 @@ var Documento = sequelize.define("Documento", {
         },
         getById: function(id) {
             return Documento.findById(id);
+        },
+        getByUUID: function(uuid) {
+            return Documento.findOne({ 
+              where:{  
+                uuid: uuid
+              }
+            }); 
+        },
+        guardar: function(documento){
+
+            return Documento.create(documento);
+        },
+        guardar: function(documento){
+
+           return Documento.update(documento,{
+                  where:{
+                    uuid:documento.uuid
+                  }
+                }); 
         }
         
      

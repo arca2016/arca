@@ -155,6 +155,7 @@ db.sequelize.sync().then(function(){
 		var marca = 	 require('./routes/marca');
 		var referencia = require('./routes/referencia');
 		var usuario = 	 require('./routes/usuario');
+		var documento =  require('./routes/documento');
 		}
 		catch(err){
 			console.log("Error cargando las rutas");
@@ -168,6 +169,7 @@ db.sequelize.sync().then(function(){
 		app.use('/marca',marca);
 		app.use('/referencia',referencia);
 		app.use('/usuario',usuario);
+		app.use('/documento',documento);
 	})
 	
 })
