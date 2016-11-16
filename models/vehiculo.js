@@ -59,9 +59,9 @@ var Vehiculo = sequelize.define("Vehiculo", {
                         ['id', 'DESC']
                     ],
 	            	 where:filtro,
-	            	 include: [
-	          			 {model: sequelize.model('Viaje')},
-                         {model: sequelize.model('Usuario')}
+	            	 include: [	          			 
+                         {model: sequelize.model('Usuario')},
+                         {model: sequelize.model('Documento')}
 	          		 ]
 	          	});
         },

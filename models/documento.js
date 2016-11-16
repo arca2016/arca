@@ -9,7 +9,8 @@ var Documento = sequelize.define("Documento", {
     deletedAt: DataTypes.DATE, 
     imagen:DataTypes.STRING,
     fechaExpiracion: DataTypes.DATE,
-    uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1}
+    uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1},
+    nombre:DataTypes.STRING
 
 }, {
     classMethods: {
