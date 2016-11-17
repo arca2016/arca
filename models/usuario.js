@@ -61,7 +61,9 @@ module.exports = function(sequelize, DataTypes) {
         where:{  
           rol:  rol,
           AgenciumId: agencia
-        }
+        },include: [
+          {model: sequelize.model('Documento')},
+          ]
       });   
     },
     createUser:function(user){
