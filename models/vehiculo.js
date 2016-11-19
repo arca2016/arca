@@ -28,8 +28,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
         associate: function(models) {
             Vehiculo.hasMany(models.Documento);
             Vehiculo.hasMany(models.Viaje);
-            Vehiculo.belongsTo(models.Usuario, { onDelete: 'cascade' }),{ foreignKey: { allowNull: true }};
-
+            Vehiculo.belongsTo(models.Usuario);
 
         },
         getById: function(id) {
@@ -45,6 +44,15 @@ var Vehiculo = sequelize.define("Vehiculo", {
                     uuid:vehiculo.uuid
                   }
                 }); 
+        },
+        actualizarConductor:function(vehiculo){
+             return Vehiculo.update(
+                    {UsuarioId:null},
+                    {where:{UsuarioId:vehiculo.UsuarioId}}
+                ).then(function(antiguosVehiculos){
+                    return Vehiculo.actualizar(vehiculo);
+
+                })
         },
         getByUUID:function(uuid){
              return Vehiculo.findOne({

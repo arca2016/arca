@@ -161,6 +161,9 @@ db.sequelize.sync().then(function(){
 			console.log("Error cargando las rutas");
 			console.dir(err);
 		}
+
+
+		try{
 		app.use('/auth',auth);
 		app.use('/agencia',agencia);
 		app.use('/vehiculo',vehiculo);
@@ -170,6 +173,12 @@ db.sequelize.sync().then(function(){
 		app.use('/referencia',referencia);
 		app.use('/usuario',usuario);
 		app.use('/documento',documento);
+		}
+		catch(err){
+			console.log("Error usando las rutas");
+			console.dir(err);
+		}
+		
 	})
 	
 })

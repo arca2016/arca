@@ -39,7 +39,7 @@ router.route('/getSignedURL/:fileName')
 	})
 router.route('/login')
 .post(function(req, res) {
-	usuario.getUsuario(req.body.usuario).then(function(usuarioResult){
+	usuario.getUsuario(req.body.usuario).then(function(usuarioResult){		
 		if(usuarioResult){
 			pass.hash(req.body.password, usuarioResult.salt, function(err, hash){
 

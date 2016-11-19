@@ -37,7 +37,19 @@ router.route('/')
 					res.status(500);
 					res.send(err.message);
 				})
-})
+});
+
+router.route('/conductor')
+.patch(function(req,res) {
+				models.Vehiculo.actualizarConductor(req.body.vehiculo).then(function(result){
+					res.send(result)
+				},
+				function(err){
+					res.status(500);
+					res.send(err.message);
+				})
+});
+
 router.route('/:uuid')
 .delete(function(req,res){
 
