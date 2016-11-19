@@ -88,6 +88,7 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 					},
 					function(err){
 						res.status(500);
+						console.dir(err)
 						res.send(err.message);
 					})
 			 	}

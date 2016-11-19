@@ -54,6 +54,9 @@ var Vehiculo = sequelize.define("Vehiculo", {
                 }); 
         },
         filtrar:function(filtro){
+        	console.log("-------------------------------")
+        	console.dir(filtro)
+        	console.log("-------------------------------")
             return Vehiculo.findAll({
                      order: [
                         ['id', 'DESC']
@@ -61,16 +64,17 @@ var Vehiculo = sequelize.define("Vehiculo", {
 	            	 where:filtro,
 	            	 include: [	          			 
                          {model: sequelize.model('Usuario')},
-                         {model: sequelize.model('Documento')}
+                         {model: sequelize.model('Documento')},
+                         {model: sequelize.model('Viaje')}
 	          		 ]
 	          	});
         },
 
         buscarDisponibles:function(filtro,nuevaFechaInicio,nuevaFechaFin){
-        	return Vehiculo.filtrar(filtro).then(function(vehiculosAgencia){
+        	return Vehiculo.filtrar(filtro).then(function(vehiculosAgencia){        		
         		var vehiculosDisponibles = [], 
         		vehiculo=[];
-        		for (var i = vehiculosAgencia.length - 1; i >= 0; i--) {
+        		for (var i = vehiculosAgencia.length - 1; i >= 0; i--) {        			
         			 vehiculo = vehiculosAgencia[i]
         			if(vehiculo.estaDisponible(nuevaFechaInicio,nuevaFechaFin)){
         				vehiculosDisponibles.push(vehiculo);
