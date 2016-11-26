@@ -9,10 +9,11 @@ router.route('/')
 	Marca.list().then(function(result){
   		res.send(result);
   	})
-			
-	
-
-	
+})
+.post(function(req,res) {
+	Marca.crear(req.body.marca.nombre).then(function(result){
+  		res.send(result);
+  	})
 })
 
 
