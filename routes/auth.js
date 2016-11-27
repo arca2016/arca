@@ -59,8 +59,15 @@ router.route('/login')
 						expiresIn: "1y",
 						noTimestamp:true 
 					});
-					res.cookie('auth', token, { /*expires:  new Date(Date.now() + 1440*60),*/ httpOnly: true });
-					res.send(result);
+					if(req.body.desarrollo){
+								res.json({
+						          	user:result,
+						          	token: token
+					        	});
+					}else{
+						res.cookie('auth', token, { /*expires:  new Date(Date.now() + 1440*60),*/ httpOnly: true });
+						res.send(result);
+					}
 
 				}else {
 					res.status(401);
@@ -83,7 +90,7 @@ router.route('/chkLoggedIn')
 router.route('/crearUsuario')
 .post(function(req, res) {
 	var nuevoUsuario = req.body.usuario;
-	var userDecoded = jwt.verify(req.cookies.auth, secret);
+	var userDecoded = req.usuario;
 	var nuevoRol = nuevoUsuario.rol;
 	var rolCreador = userDecoded.rol;
 	var puedeCrear = true;

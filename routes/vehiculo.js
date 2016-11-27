@@ -16,7 +16,7 @@ var models = require('./../models');
 router.route('/')
 .post(function(req,res) {
 
-			var userDecoded = jwt.verify(req.cookies.auth, secret);
+			var userDecoded = req.usuario;
 			models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 				req.body.vehiculo.AgenciumId = usuario.AgenciumId;
 				models.Vehiculo.crear(req.body.vehiculo).then(function(result){
@@ -72,7 +72,7 @@ router.route('/:uuid')
 router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
 .post(function(req,res) {
 
-			var userDecoded = jwt.verify(req.cookies.auth, secret);
+			var userDecoded =  req.usuario;
 
 			 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 			 	var filtro =  req.body.filtro || {};

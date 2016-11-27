@@ -17,7 +17,7 @@ var models = require('./../models');
 
 router.route('/')
 .post(function(req,res) {
-	var userDecoded = jwt.verify(req.cookies.auth, secret);
+	var userDecoded = req.usuario;
 	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){	 
 	 console.dir(req.body.viaje)			
 				models.Viaje.crear(usuario,req.body.viaje).then(function(result){
@@ -37,7 +37,7 @@ router.route('/')
 })
 router.route('/recurrente')
 .post(function(req,res) {
-	var userDecoded = jwt.verify(req.cookies.auth, secret);
+	var userDecoded = req.usuario;
 	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 	 	
 			

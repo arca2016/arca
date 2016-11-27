@@ -17,7 +17,7 @@ var models = require('./../models');
 
 router.route('/')
 .post(function(req,res) {
-	var userDecoded = jwt.verify(req.cookies.auth, secret);
+	var userDecoded = req.usuario;
 	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 	 	
 			if(usuario.rol !== "admin"){
