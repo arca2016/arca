@@ -12,6 +12,14 @@ var multiparty 	   = require('connect-multiparty');
 var i18n 		   = require('i18n'); 
 var app 		   = express();
 var secret         = 'supersecret'
+//*********
+var cors = require('cors');
+var express = require('express');
+var app = express();
+app.use(cors());
+app.options('*', cors());
+
+///////////
 var authenticate   = jwt({
   secret: secret,
   getToken: function fromHeaderOrCookie(req) {

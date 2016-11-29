@@ -42,7 +42,7 @@ router.route('/recurrente')
 	 	
 			
 				models.Viaje.crearRecurrente(usuario,req.body.vehiculoId,req.body.fechaInicio,req.body.fechaFin,
-					req.body.tiempoDeViaje,req.body.incluyeFestivos,req.body.diasDeLaSemana).then(function(result){
+					req.body.tiempoDeViaje,req.body.incluyeFestivos,req.body.diasDeLaSemana,req.body.descripcion).then(function(result){
 					res.send(result)
 				},
 				function(err){

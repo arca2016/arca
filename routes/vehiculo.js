@@ -87,9 +87,10 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 						 $gte:filtro.capacidad
 					 }
 				 }
+
 			 	if(filtro.fechaInicio && filtro.fechaFin){
-			 		var nuevaFechaInicio = filtro.fechaInicio,
-			 		nuevaFechaFin = filtro.fechaFin;
+			 		var nuevaFechaInicio = new Date(filtro.fechaInicio),
+			 		nuevaFechaFin = new Date(filtro.fechaFin);
 			 		delete filtro.fechaInicio;
 			 		delete filtro.fechaFin
 

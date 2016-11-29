@@ -6,7 +6,7 @@ var Q = require('q')
 
 module.exports = function(sequelize, DataTypes) {
 var Vehiculo = sequelize.define("Vehiculo", {
-    deletedAt: DataTypes.DATE, 
+    deletedAt: DataTypes.DATE,
     placa:{type:DataTypes.STRING,unique:true},
     capacidad:DataTypes.INTEGER,
     modelo:DataTypes.INTEGER,
@@ -20,7 +20,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
     marca:DataTypes.STRING,
     referencia:DataTypes.STRING,
     uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1}
-    
+
 
 }, {
     classMethods: {
@@ -43,7 +43,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                   where:{
                     uuid:vehiculo.uuid
                   }
-                }); 
+                });
         },
         actualizarConductor:function(vehiculo){
              return Vehiculo.update(
@@ -59,7 +59,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                   where:{
                     uuid:uuid
                   }
-                }); 
+                });
         },
         filtrar:function(filtro){
         	console.log("-------------------------------")
@@ -70,7 +70,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                         ['id', 'DESC']
                     ],
 	            	 where:filtro,
-	            	 include: [	          			 
+	            	 include: [
                          {model: sequelize.model('Usuario')},
                          {model: sequelize.model('Documento')},
                          {model: sequelize.model('Viaje')}
@@ -79,10 +79,10 @@ var Vehiculo = sequelize.define("Vehiculo", {
         },
 
         buscarDisponibles:function(filtro,nuevaFechaInicio,nuevaFechaFin){
-        	return Vehiculo.filtrar(filtro).then(function(vehiculosAgencia){        		
-        		var vehiculosDisponibles = [], 
+        	return Vehiculo.filtrar(filtro).then(function(vehiculosAgencia){
+        		var vehiculosDisponibles = [],
         		vehiculo=[];
-        		for (var i = vehiculosAgencia.length - 1; i >= 0; i--) {        			
+        		for (var i = vehiculosAgencia.length - 1; i >= 0; i--) {
         			 vehiculo = vehiculosAgencia[i]
         			if(vehiculo.estaDisponible(nuevaFechaInicio,nuevaFechaFin)){
         				vehiculosDisponibles.push(vehiculo);
@@ -91,14 +91,14 @@ var Vehiculo = sequelize.define("Vehiculo", {
         		return vehiculosDisponibles;
         	})
         }
-        
-     
+
+
 
 
     },
     instanceMethods:{
         estaDisponible:function(nuevaFechaInicio,nuevaFechaFin){
-
+           console.log(this.placa);
            for (var i = this.Viajes.length - 1; i >= 0; i--) {
                 if((this.Viajes[i].fechaInicio >= nuevaFechaInicio &&   this.Viajes[i].fechaInicio <= nuevaFechaFin) || (this.Viajes[i].fechaFin>= nuevaFechaInicio && this.Viajes[i].fechaFin<= nuevaFechaFin))
                     return false;
