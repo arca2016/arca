@@ -68,6 +68,23 @@ router.route('/:uuid')
 		});
 	});
 
+router.route('/viajes/:uuid')
+.get(function(req,res){
+
+		models.Vehiculo.getByUUID(req.params.uuid)
+		.then(function(vehiculo){
+			if(!vehiculo){
+				res.status = 404;
+				res.send();
+				return;
+			}
+			else{
+				vehiculo.getViajes().then(function(viajes){
+					res.send(viajes);
+				})
+			}
+		});
+	});
 
 router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
 .post(function(req,res) {
@@ -97,6 +114,9 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 
 
 			 		models.Vehiculo.buscarDisponibles(filtro,nuevaFechaInicio,nuevaFechaFin).then(function(result){
+			 			console.log("-----------Disponibles--")
+			 			console.dir(result)
+			 			console.log("------------------------")
 					res.send(result)
 					},
 					function(err){
@@ -112,6 +132,9 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 						res.send(result)
 					},
 					function(err){
+						console.log("----------------Error----")
+						console.dir(err)
+						console.log("-------------------------")
 						res.status(500);
 						res.send(err.message);
 					})

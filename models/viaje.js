@@ -4,7 +4,8 @@ var models  = require(__dirname);
 var Q = require('q')
 var Promise = require("bluebird");
 var uuid = require('uuid-v4');
-
+var  STATUS_CANCELADO = 'Cancelado';
+var  STATUS_CONFIRMADO =  'Confirmado'
 module.exports = function(sequelize, DataTypes) {
     var Viaje = sequelize.define("Viaje", {
         deletedAt: DataTypes.DATE,
@@ -13,7 +14,9 @@ module.exports = function(sequelize, DataTypes) {
         origen:DataTypes.STRING,
         destino:DataTypes.STRING,
         descripcion:DataTypes.STRING,
-        recurrenteId:DataTypes.STRING
+        recurrenteId:DataTypes.STRING,        
+        uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV4},
+        estado:{type:DataTypes.ENUM('Confirmado', 'Cancelado'),defaultValue:'Confirmado'}
 
     }, {
         classMethods: {
@@ -21,31 +24,38 @@ module.exports = function(sequelize, DataTypes) {
             associate: function(models) {
                 Viaje.belongsTo(models.Vehiculo, { onDelete: 'cascade' }),{ foreignKey: { allowNull: true }};
                 Viaje.belongsTo(models.Usuario, { onDelete: 'cascade' }),{ foreignKey: { allowNull: true }}; //cliente
-
-
-
             },
             getById: function(id) {
                 return Viaje.findById(id);
+            },
+            getByUuid: function(uuid) {
+                return Viaje.findOne({          
+                     where:{uuid: uuid} 
+                 })
             },
             crear: function(usuario,viaje){
                 console.dir(viaje);
                 return sequelize.model("Vehiculo").getById(viaje.VehiculoId).then(function(vehiculo){
 
-                    return vehiculo.getViajes().then(function (viajes) {
+                    return vehiculo.getViajes(
+                                    {where:
+                                        {estado:
+                                            {$ne:STATUS_CANCELADO}
+                                        }
+                                    }).then(function (viajes) {
 
 
-                            vehiculo.Viajes = viajes;
-                            if(usuario.AgenciumId != vehiculo.AgenciumId){
-                                throw "Error, intento de violacion a la integridad del sistema, sera reportado";
-                            }
-                            if(vehiculo.estaDisponible(viaje.fechaInicio,viaje.fechaFin)){
-                                return Viaje.build(viaje).save();
-                            }
-                            else{
-                                throw Error("Vehiculo no disponible en el rango de fechas dado");
-                            }
-                        })
+                                    vehiculo.Viajes = viajes;
+                                    if(usuario.AgenciumId != vehiculo.AgenciumId){
+                                        throw "Error, intento de violacion a la integridad del sistema, sera reportado";
+                                    }
+                                    if(vehiculo.estaDisponible(viaje.fechaInicio,viaje.fechaFin)){
+                                        return Viaje.build(viaje).save();
+                                    }
+                                    else{
+                                        throw Error("Vehiculo no disponible en el rango de fechas dado");
+                                    }
+                                })
 
 
 
@@ -57,7 +67,7 @@ module.exports = function(sequelize, DataTypes) {
             	var recurrenteId = uuid();
 
                 var listaViajesPromesa = []
-                return  sequelize.model("Vehiculo").filtrar({id:vehiculoId}).then(function(vehiculo){ //busco el vehiculo
+                return  sequelize.model("Vehiculo").filtrar({id:vehiculoId},STATUS_CONFIRMADO).then(function(vehiculo){ //busco el vehiculo
                     vehiculo = vehiculo[0]
                     return  sequelize.model("DiaFestivo").listDiaFestivo().then(function(festivos){ // listo los festivos
                         var festivosNoTrabajables =[];
@@ -124,6 +134,32 @@ module.exports = function(sequelize, DataTypes) {
 
 
 
+        },
+        instanceMethods:{
+            cancelarViaje:function(){
+                if(this.recurrenteId){
+                    return Viaje.destroy({
+                        where:{
+                            recurrenteId:this.recurrenteId
+                        }
+                    })
+                }
+                else{
+                   return this.destroy();
+                }
+            },
+            cancelarViaje:function(){
+                if(this.recurrenteId){
+                    return Viaje.update(
+                                {estado:STATUS_CANCELADO},
+                                {where:{recurrenteId:this.recurrenteId}}
+                            )
+                }
+                else{
+                    this.estado = STATUS_CANCELADO;
+                    return this.save();
+                }
+            }
         }
 
 

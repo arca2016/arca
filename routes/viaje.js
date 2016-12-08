@@ -53,9 +53,27 @@ router.route('/recurrente')
 		
 		})
 	
-
-	
 })
+
+router.route('/cancelarViaje')
+.post(function(req,res) {
+	var uuid = req.body.uuid;	
+	 	
+			
+		models.Viaje.getByUuid(uuid).then(function(viaje){
+			viaje.cancelarViaje().then(function(result){
+				res.send(result)
+			})
+			
+		},
+		function(err){
+			res.status(500);
+			res.send(err)
+		})
+	
+		
+	})
+	
 
 
 module.exports = router;
