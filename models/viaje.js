@@ -147,18 +147,6 @@ module.exports = function(sequelize, DataTypes) {
                 else{
                    return this.destroy();
                 }
-            },
-            cancelarViaje:function(){
-                if(this.recurrenteId){
-                    return Viaje.update(
-                                {estado:STATUS_CANCELADO},
-                                {where:{recurrenteId:this.recurrenteId}}
-                            )
-                }
-                else{
-                    this.estado = STATUS_CANCELADO;
-                    return this.save();
-                }
             }
         }
 
