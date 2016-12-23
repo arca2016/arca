@@ -93,6 +93,7 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 
 			 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 			 	var filtro =  req.body.filtro || {};
+			 	filtro.AgenciumId = usuario.AgenciumId
 
 			 	for(var k in filtro){
    					if(!filtro[k]) delete filtro[k];
