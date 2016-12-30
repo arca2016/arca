@@ -115,9 +115,7 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 
 
 			 		models.Vehiculo.buscarDisponibles(filtro,nuevaFechaInicio,nuevaFechaFin).then(function(result){
-			 			console.log("-----------Disponibles--")
-			 			console.dir(result)
-			 			console.log("------------------------")
+			 			
 					res.send(result)
 					},
 					function(err){

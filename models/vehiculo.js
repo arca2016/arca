@@ -96,6 +96,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
 
         buscarDisponibles:function(filtro,nuevaFechaInicio,nuevaFechaFin){
         	return Vehiculo.filtrar(filtro,STATUS_CONFIRMADO).then(function(vehiculosAgencia){
+            console.dir(vehiculosAgencia)
         		var vehiculosDisponibles = [],
         		vehiculo=[];
         		for (var i = vehiculosAgencia.length - 1; i >= 0; i--) {
@@ -114,11 +115,18 @@ var Vehiculo = sequelize.define("Vehiculo", {
     },
     instanceMethods:{
         estaDisponible:function(nuevaFechaInicio,nuevaFechaFin){
-           console.log(this.placa);
+           
            for (var i = this.Viajes.length - 1; i >= 0; i--) {
-                if((this.Viajes[i].fechaInicio >= nuevaFechaInicio &&   this.Viajes[i].fechaInicio <= nuevaFechaFin) || (this.Viajes[i].fechaFin>= nuevaFechaInicio && this.Viajes[i].fechaFin<= nuevaFechaFin))
+                console.log(this.placa);
+                //El viaje existente empieza despues y empieza antes que se acabe el nuevo                              el viaje actual empieza despues que empieze el nuevo y acaba antes que el nuevo
+                if((this.Viajes[i].fechaFin >= nuevaFechaInicio &&   this.Viajes[i].fechaFin <= nuevaFechaFin) || (this.Viajes[i].fechaInicio>= nuevaFechaInicio && this.Viajes[i].fechaInicio<= nuevaFechaFin)){
                     console.log("Ocupado")
                     return false;
+                  }
+                  else{
+                    console.log("Disponible")
+                    return true
+                  }
             }
             console.log("Disponible")
             return true;

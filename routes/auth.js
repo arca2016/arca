@@ -135,6 +135,7 @@ router.route('/crearUsuario')
 	}
 	else{
 		res.status(412);
+		console.log("error de permisos")
 		res.send("Error de permisos");
 		return;
 	}
