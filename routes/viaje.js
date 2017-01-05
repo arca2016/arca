@@ -24,7 +24,7 @@ router.route('/')
 					res.send(result)
 				},
 				function(err){
-					res.status(500);
+					res.status(412);
 					console.dir(err.message)
 					res.send(err.message)
 				})
@@ -46,7 +46,7 @@ router.route('/recurrente')
 					res.send(result)
 				},
 				function(err){
-					res.status(500);
+					res.status(412);
 					res.send(err)
 				})
 			
