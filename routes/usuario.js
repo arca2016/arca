@@ -31,6 +31,13 @@ router.route('/:rol')
 router.route('/')
 .patch(function(req,res) {
 
+				
+			var nuevoRol = req.body.usuario.rol;
+			var rolCreador = req.usuario.rol;
+			var puedeCrear = Usuario.tienePermiso(rolCreador,nuevoRol)
+			if(puedeCrear){
+	
+
 				Usuario.actualizar(req.body.usuario).then(function(result){
 					res.send(result)
 				},
@@ -41,6 +48,13 @@ router.route('/')
 					res.status(500);
 					res.send(err.message);
 				})
+			}
+			else{
+				res.status(412);
+				console.log("error de permisos")
+				res.send("Error de permisos");
+				return;
+			}
 })
 
 

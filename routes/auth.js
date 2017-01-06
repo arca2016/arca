@@ -93,24 +93,9 @@ router.route('/crearUsuario')
 	var userDecoded = req.usuario;
 	var nuevoRol = nuevoUsuario.rol;
 	var rolCreador = userDecoded.rol;
-	var puedeCrear = true;
 	nuevoUsuario.AgenciumId = req.usuario.AgenciumId;
 	
-	if(rolCreador=='gerente'&&(nuevoRol=='admin')){
-		//no puede crear
-		puedeCrear = false;
-	}
-	if(rolCreador== 'despachador' && (nuevoRol!='cliente'&& nuevoRol!='conductor')){
-		// no puede crear
-		puedeCrear = false;
-	}
-	if(rolCreador=='cliente'||rolCreador=='conductor'){
-		// no puede crear
-		puedeCrear = false;
-	}
-	if(nuevoRol != 'gerente'&& nuevoRol != 'despachador'&& nuevoRol != 'cliente'&& nuevoRol != 'conductor'){
-		puedeCrear = false
-	}
+	var puedeCrear = usuario.tienePermiso(rolCreador,nuevoRol)
 	if(puedeCrear){
 
 		pass.hash(nuevoUsuario.password, function (err, salt, hash) {
@@ -120,7 +105,7 @@ router.route('/crearUsuario')
 		}
 			nuevoUsuario.salt = salt;
 			nuevoUsuario.hash = hash;
-		var usr = usuario.build(nuevoUsuario).save().then(function (result) {			
+		var usr = rolCreador.build(nuevoUsuario).save().then(function (result) {			
 			res.send(result);
 		}).catch(function (error) {
 			console.dir(error)

@@ -112,8 +112,26 @@ module.exports = function(sequelize, DataTypes) {
 
      },
 
-    
-
+     tienePermiso:function(rolCreador,nuevoRol){
+      var puedeCrear = true
+     if(rolCreador=='gerente'&&(nuevoRol=='admin')){
+          //no puede crear
+          puedeCrear = false;
+        }
+        if(rolCreador== 'despachador' && (nuevoRol!='cliente'&& nuevoRol!='conductor')){
+          // no puede crear
+          puedeCrear = false;
+        }
+        if(rolCreador=='cliente'||rolCreador=='conductor'){
+          // no puede crear
+          puedeCrear = false;
+        }
+        if(nuevoRol != 'gerente'&& nuevoRol != 'despachador'&& nuevoRol != 'cliente'&& nuevoRol != 'conductor'){
+          puedeCrear = false
+        }
+        console.log("------------------Puede Crear---------------"+ puedeCrear)
+        return puedeCrear
+      },
 
    createAdmin: function(){
     var deferred = Q.defer();
