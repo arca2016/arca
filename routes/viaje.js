@@ -41,13 +41,15 @@ router.route('/recurrente')
 	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 	 	
 			
-				models.Viaje.crearRecurrente(usuario,req.body.vehiculoId,req.body.fechaInicio,req.body.fechaFin,
-					req.body.tiempoDeViaje,req.body.incluyeFestivos,req.body.diasDeLaSemana,req.body.descripcion).then(function(result){
+				models.Viaje.crearRecurrente(usuario,req.body.vehiculoId,req.body.fechaInicio,req.body.fechaFin,req.body.tiempoDeViaje,req.body.incluyeFestivos,req.body.diasDeLaSemana,req.body.descripcion).then(function(result){
+					console.log("TOOOOOOOOOOOOOOOOOOOOOOOODO BIEN")
 					res.send(result)
 				},
 				function(err){
+					console.log("TOOOOOOOOOOOOOOOOOOOOOOOODO MAL")
+					console.log(err.message)					
 					res.status(412);
-					res.send(err)
+					res.send(err.message)
 				})
 			
 		

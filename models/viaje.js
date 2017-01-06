@@ -89,7 +89,7 @@ module.exports = function(sequelize, DataTypes) {
                                      return {UsuarioId:usuario.id,fechaInicio:esFestivo.dia,fechaFin:fechaFinalViaje,destino:descripcion,"VehiculoId":vehiculoId,recurrenteId:recurrenteId,descripcion:descripcion};
                                      }
                                      else{
-                                         throw("No esta disponible para la fecha " + fechaInicioViaje);
+                                         throw Error("No esta disponible para la fecha " + fechaInicioViaje);
 
                                          }
                                      }
@@ -123,9 +123,6 @@ module.exports = function(sequelize, DataTypes) {
 
 
 
-                }).catch(function(err){
-                    console.dir(err.message)
-                    return err.message;
                 })
             }
 
