@@ -76,7 +76,7 @@ module.exports = function(sequelize, DataTypes) {
                         var fechaAEvaluar = fechaInicio;
                         var diaDespuesDeUltimaFecha = new Date(fechaFin);
                         var recurreteFechaInicio = (new Date(fechaInicio))
-                        var recurreteFechaFin= (new Date(fechaFin)).setSeconds(Date(fechaFin).getSeconds()+tiempoDeViaje);
+                        var recurreteFechaFin= (new Date(fechaFin)).setSeconds(new Date(fechaFin).getSeconds()+tiempoDeViaje);
                         diaDespuesDeUltimaFecha.setDate(diaDespuesDeUltimaFecha.getDate()+1);
                         while(fechaAEvaluar.toDateString()!= diaDespuesDeUltimaFecha.toDateString()){
 
