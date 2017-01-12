@@ -14,7 +14,9 @@ module.exports = function(sequelize, DataTypes) {
         origen:DataTypes.STRING,
         destino:DataTypes.STRING,
         descripcion:DataTypes.STRING,
-        recurrenteId:DataTypes.STRING,        
+        recurrenteId:DataTypes.STRING,
+        recurreteFechaInicio:DataTypes.DATE,
+        recurreteFechaFin:DataTypes.DATE,        
         uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV4},
         estado:{type:DataTypes.ENUM('Confirmado', 'Cancelado'),defaultValue:'Confirmado'}
 
@@ -73,20 +75,22 @@ module.exports = function(sequelize, DataTypes) {
                         var festivosNoTrabajables =[];
                         var fechaAEvaluar = fechaInicio;
                         var diaDespuesDeUltimaFecha = new Date(fechaFin);
+                        var recurreteFechaInicio = (new Date(fechaInicio))
+                        var recurreteFechaFin= (new Date(fechaFin)).setSeconds(diaDespuesDeUltimaFecha.getSeconds()+tiempoDeViaje);
                         diaDespuesDeUltimaFecha.setDate(diaDespuesDeUltimaFecha.getDate()+1);
                         while(fechaAEvaluar.toDateString()!= diaDespuesDeUltimaFecha.toDateString()){
 
                             if(diasDeLaSemana.indexOf(fechaAEvaluar.getDay()) >= 0){ // si la reserva se trabaja ese dia
 
                                 listaViajesPromesa.push( sequelize.model("DiaFestivo").esDiaFestivo(new Date(fechaAEvaluar),festivos).then(function(esFestivo){
-                                    console.log(esFestivo.dia);
+                                    
 
                                      if(!esFestivo.result ||(esFestivo.result&& incluyeFestivos) ) { // si no es festivo o si trabaja los festivos
                                      var fechaInicioViaje= esFestivo.dia;
                                      var fechaFinalViaje = new Date(fechaInicioViaje.getTime());
                                      fechaFinalViaje.setSeconds(fechaFinalViaje.getSeconds()+tiempoDeViaje);
                                      if(vehiculo.estaDisponible(fechaInicioViaje,fechaFinalViaje)){// si esta disponible en esa fecha
-                                     return {UsuarioId:usuario.id,fechaInicio:esFestivo.dia,fechaFin:fechaFinalViaje,destino:descripcion,"VehiculoId":vehiculoId,recurrenteId:recurrenteId,descripcion:descripcion};
+                                     return {UsuarioId:usuario.id,fechaInicio:esFestivo.dia,fechaFin:fechaFinalViaje,destino:descripcion,"VehiculoId":vehiculoId,recurrenteId:recurrenteId,descripcion:descripcion,recurreteFechaInicio:recurreteFechaInicio,recurreteFechaFin:recurreteFechaFin};
                                      }
                                      else{
                                          throw Error("No esta disponible para la fecha " + fechaInicioViaje);

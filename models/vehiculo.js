@@ -118,6 +118,8 @@ var Vehiculo = sequelize.define("Vehiculo", {
            
            for (var i = this.Viajes.length - 1; i >= 0; i--) {
                 console.log(this.placa);
+                console.log("---------------Viajes de "+this.placa+"-----------------------------------------------")
+                console.dir(this.Viajes)
                 //El viaje existente empieza despues y acaba antes que se acabe el nuevo                              el viaje actual empieza despues que empieze el nuevo y no acaba antes que el nuevo
                 if((this.Viajes[i].fechaFin >= nuevaFechaInicio &&   this.Viajes[i].fechaFin <= nuevaFechaFin) || (this.Viajes[i].fechaInicio>= nuevaFechaInicio && this.Viajes[i].fechaInicio<= nuevaFechaFin)){
                     console.log("Ocupado")
