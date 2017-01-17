@@ -102,10 +102,11 @@ router.route('/crearUsuario')
 		if (err) {
 			res.status(500);
 			res.send(err);
+			re
 		}
 			nuevoUsuario.salt = salt;
 			nuevoUsuario.hash = hash;
-		var usr = rolCreador.build(nuevoUsuario).save().then(function (result) {			
+		usuario.build(nuevoUsuario).save().then(function (result) {			
 			res.send(result);
 		}).catch(function (error) {
 			console.dir(error)
