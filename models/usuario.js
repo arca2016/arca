@@ -49,7 +49,8 @@ module.exports = function(sequelize, DataTypes) {
         where:queryParameters,
         include: [
           {model: sequelize.model('Documento')},
-          {model: sequelize.model('Vehiculo')}
+          {model: sequelize.model('Vehiculo')},
+          {model: sequelize.model('Agencia')}
         ]
 
       });   
