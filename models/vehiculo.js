@@ -125,10 +125,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                     console.log("Ocupado")
                     return false;
                   }
-                  else{
-                    console.log("Disponible")
-                    return true
-                  }
+                  
             }
             console.log("Disponible")
             return true;
