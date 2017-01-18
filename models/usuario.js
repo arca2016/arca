@@ -56,7 +56,7 @@ module.exports = function(sequelize, DataTypes) {
       });   
     },
     listEmpleados: function(agencia,rol) { 
-      var rol = rol || { $ne: 'cliente'  }
+      var rol = rol || { $ne: 'Cliente'  }
       return Usuario.findAll({
         attributes:  { exclude: ['updatedAt','createdAt','hash','salt'] },
         where:{  

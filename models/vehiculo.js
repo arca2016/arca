@@ -128,20 +128,21 @@ var Vehiculo = sequelize.define("Vehiculo", {
         estaDisponible:function(nuevaFechaInicio,nuevaFechaFin){
            
            for (var i = this.Viajes.length - 1; i >= 0; i--) {
-            /*
+            
                 console.log("---------------Viajes de "+this.placa+"-----------------------------------------------")
-                console.log(new Date(this.Viajes[i].fechaFin) +">="+ new Date(nuevaFechaInicio ))
-                console.log(new Date(this.Viajes[i].fechaFin) >= new Date(nuevaFechaInicio))
-                console.log(new Date(this.Viajes[i].fechaFin) +"<="+ new Date(nuevaFechaFin))
-                console.log(new Date(this.Viajes[i].fechaFin) <= new Date(nuevaFechaFin))
-                console.log(new Date(this.Viajes[i].fechaInicio) +">="+ new Date(nuevaFechaInicio))
-                console.log(new Date(this.Viajes[i].fechaInicio)>= new Date(nuevaFechaInicio));
-                console.log(new Date(this.Viajes[i].fechaInicio) +"<="+ new Date(nuevaFechaFin))
-                console.log(new Date(this.Viajes[i].fechaInicio)<= new Date(nuevaFechaFin))
-               */
+                console.log(new Date(this.Viajes[i].fechaInicio) +">="+nuevaFechaInicio)
+                console.log(new Date(this.Viajes[i].fechaInicio) >= nuevaFechaInicio)
+                console.log(new Date(this.Viajes[i].fechaInicio) +"<="+ nuevaFechaFin)
+                console.log(new Date(this.Viajes[i].fechaInicio) <=  nuevaFechaFin)
+                console.log(new Date(this.Viajes[i].fechaInicio) +"<="+ nuevaFechaInicio)
+                console.log(new Date(this.Viajes[i].fechaInicio)>=  nuevaFechaInicio);
+                console.log(new Date(this.Viajes[i].fechaInicio) +">="+ nuevaFechaInicio)
+                console.log(new Date(this.Viajes[i].fechaFin)<= nuevaFechaFin)
+               
 
-                //El viaje existente empieza despues pero acaba antes que se acabe el nuevo                              el viaje actual empieza antes que empieze el nuevo pero no acaba antes que empieze el nuevo
-                if((new Date(this.Viajes[i].fechaFin) >= nuevaFechaInicio &&   new Date(this.Viajes[i].fechaFin) <= nuevaFechaFin) || (new Date(this.Viajes[i].fechaInicio)>= nuevaFechaInicio && new Date(this.Viajes[i].fechaFin)>= nuevaFechaInicio)){
+                //El viaje existente empieza despues pero empieza antes antes que se acabe el nuevo                              el viaje actual empieza antes que empieze el nuevo pero no acaba antes que empieze el nuevo
+                if((new Date(this.Viajes[i].fechaInicio) >= nuevaFechaInicio &&   new Date(this.Viajes[i].fechaInicio) <= nuevaFechaFin) || (new Date(this.Viajes[i].fechaInicio)<= nuevaFechaInicio && new Date(this.Viajes[i].fechaFin)>= nuevaFechaInicio)){
+                  
                     console.log("Ocupado")
                     return false;
                   }
