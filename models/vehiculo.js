@@ -59,7 +59,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
         listarDocumentosProximosAvencer:function(agenciaId){
           var veintiNueveDiasDesdeHoy =  moment().add(29,'d').toDate(); 
           console.log("-----------------"+veintiNueveDiasDesdeHoy+"-------------------")
-             return Vehiculo.findOne({
+             return Vehiculo.findAll({
                   where:{
                     AgenciumId:agenciaId
                   },include: [
