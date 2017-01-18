@@ -164,7 +164,7 @@ router.route('/register')
 
 		usuarioInfo.salt = salt;
 		usuarioInfo.hash = hash;
-		usuarioInfo.rol = "despachador";
+		usuarioInfo.rol = "agendador";
 
 
 		var usr = usuario.build(usuarioInfo).save().then(function (result) {
