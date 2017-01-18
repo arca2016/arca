@@ -94,7 +94,7 @@ module.exports = function(sequelize, DataTypes) {
                                      return {UsuarioId:usuario.id,fechaInicio:esFestivo.dia,fechaFin:fechaFinalViaje,"VehiculoId":vehiculoId,recurrenteId:recurrenteId,descripcion:descripcion,recurreteFechaInicio:recurreteFechaInicio,recurreteFechaFin:recurreteFechaFin,recurreteDiasDeLaSemana:diasDeLaSemana};
                                      }
                                      else{
-                                         throw Error("El vehiculo con compromisos ya asignados para algunas fechas dadas");
+                                         throw Error("El vehiculo tiene compromisos ya asignados para algunas fechas dadas");
 
                                          }
                                      }
