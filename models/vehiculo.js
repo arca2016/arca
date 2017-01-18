@@ -1,5 +1,5 @@
-    "use strict";
-
+"use strict";
+var moment = require('moment')
 var models  = require(__dirname);
 var Q = require('q')
 var  STATUS_CANCELADO = 'Cancelado';
@@ -55,6 +55,17 @@ var Vehiculo = sequelize.define("Vehiculo", {
                     return Vehiculo.actualizar(vehiculo);
 
                 })
+        },
+        listarDocumentosProximosAvencer:function(agenciaId){
+          var veintiNueveDiasDesdeHoy =  moment().add(29,'d').toDate(); 
+          console.log("-----------------"+veintiNueveDiasDesdeHoy+"-------------------")
+             return Vehiculo.findOne({
+                  where:{
+                    AgenciumId:agenciaId
+                  },include: [
+                         {model: sequelize.model('Documento'), required: true, where: { fechaExpiracion: {$lte: veintiNueveDiasDesdeHoy} }}
+                  ]
+                });
         },
         getByUUID:function(uuid){
              return Vehiculo.findOne({

@@ -17,6 +17,7 @@ module.exports = function(sequelize, DataTypes) {
         recurrenteId:DataTypes.STRING,
         recurreteFechaInicio:DataTypes.DATE,
         recurreteFechaFin:DataTypes.DATE,
+        recurreteDiasDeLaSemana:DataTypes.JSON,
         uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV4},
         estado:{type:DataTypes.ENUM('Confirmado', 'Cancelado'),defaultValue:'Confirmado'}
 
@@ -90,7 +91,7 @@ module.exports = function(sequelize, DataTypes) {
                                      var fechaFinalViaje = new Date(fechaInicioViaje.getTime());
                                      fechaFinalViaje.setSeconds(fechaFinalViaje.getSeconds()+tiempoDeViaje);
                                      if(vehiculo.estaDisponible(fechaInicioViaje,fechaFinalViaje)){// si esta disponible en esa fecha
-                                     return {UsuarioId:usuario.id,fechaInicio:esFestivo.dia,fechaFin:fechaFinalViaje,destino:diasDeLaSemana,"VehiculoId":vehiculoId,recurrenteId:recurrenteId,descripcion:descripcion,recurreteFechaInicio:recurreteFechaInicio,recurreteFechaFin:recurreteFechaFin};
+                                     return {UsuarioId:usuario.id,fechaInicio:esFestivo.dia,fechaFin:fechaFinalViaje,"VehiculoId":vehiculoId,recurrenteId:recurrenteId,descripcion:descripcion,recurreteFechaInicio:recurreteFechaInicio,recurreteFechaFin:recurreteFechaFin,recurreteDiasDeLaSemana:diasDeLaSemana};
                                      }
                                      else{
                                          throw Error("No esta disponible para la fecha " + fechaInicioViaje);

@@ -2,6 +2,8 @@ var express = require('express');
 var router  = express.Router();
 var Usuario = require('./../models').Usuario;
 var Documento = require('./../models').Documento;
+var Vehiculo = require('./../models').Vehiculo;
+
 var request = require('request')
 
 
@@ -30,6 +32,21 @@ router.route('/')
 					console.dir(err.message)
 					res.send(err.message)
 				})
+			
+})
+
+router.route('/documentosProximosAVencer')
+.get(function(req,res) {	
+			Usuario.getUsuarioPorId(req.usuario.id).then(function(usuario){
+				Vehiculo.listarDocumentosProximosAvencer(usuario.AgenciumId).then(function(result){
+					res.send(result)
+				},
+				function(err){
+					res.status(500);
+					console.dir(err.message)
+					res.send(err.message)
+				})
+			})
 			
 })
 
