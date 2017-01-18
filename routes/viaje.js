@@ -45,7 +45,9 @@ router.route('/recurrente')
 					res.send(result)
 				},
 				function(err){
-					console.log(err.message)					
+					console.log("----------------")
+					console.log(typeof err)						
+					console.log("---------------")					
 					res.status(412);
 					res.send(err.message)
 				})
