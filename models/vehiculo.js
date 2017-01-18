@@ -141,7 +141,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                */
 
                 //El viaje existente empieza despues pero acaba antes que se acabe el nuevo                              el viaje actual empieza antes que empieze el nuevo pero no acaba antes que empieze el nuevo
-                if((this.Viajes[i].fechaFin >= nuevaFechaInicio &&   this.Viajes[i].fechaFin <= nuevaFechaFin) || (this.Viajes[i].fechaInicio>= nuevaFechaInicio && this.Viajes[i].fechaFin>= nuevaFechaInicio)){
+                if((new Date(this.Viajes[i].fechaFin) >= nuevaFechaInicio &&   new Date(this.Viajes[i].fechaFin) <= nuevaFechaFin) || (new Date(this.Viajes[i].fechaInicio)>= nuevaFechaInicio && new Date(this.Viajes[i].fechaFin)>= nuevaFechaInicio)){
                     console.log("Ocupado")
                     return false;
                   }

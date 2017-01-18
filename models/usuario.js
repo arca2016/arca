@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     rol:{              
       type:   DataTypes.ENUM,
-      values: ["admin","gerente","agendador","cliente","conductor"]
+      values: ["admin","Gerente","Agendador","Cliente","Conductor"]
     },
 
     telefono: DataTypes.STRING,
@@ -115,19 +115,19 @@ module.exports = function(sequelize, DataTypes) {
 
      tienePermiso:function(rolCreador,nuevoRol){
       var puedeCrear = true
-     if(rolCreador=='gerente'&&(nuevoRol=='admin')){
+     if(rolCreador=='Gerente'&&(nuevoRol=='admin')){
           //no puede crear
           puedeCrear = false;
         }
-        if(rolCreador== 'agendador' && (nuevoRol!='cliente'&& nuevoRol!='conductor')){
+        if(rolCreador== 'Agendador' && (nuevoRol!='Cliente'&& nuevoRol!='Conductor')){
           // no puede crear
           puedeCrear = false;
         }
-        if(rolCreador=='cliente'||rolCreador=='conductor'){
+        if(rolCreador=='Cliente'||rolCreador=='Conductor'){
           // no puede crear
           puedeCrear = false;
         }
-        if(nuevoRol != 'gerente'&& nuevoRol != 'agendador'&& nuevoRol != 'cliente'&& nuevoRol != 'conductor'){
+        if(nuevoRol != 'Gerente'&& nuevoRol != 'Agendador'&& nuevoRol != 'Cliente'&& nuevoRol != 'Conductor'){
           puedeCrear = false
         }
         console.log("------------------Puede Crear---------------"+ puedeCrear)
