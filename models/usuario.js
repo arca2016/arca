@@ -115,11 +115,11 @@ module.exports = function(sequelize, DataTypes) {
 
      tienePermiso:function(rolCreador,nuevoRol){
       var puedeCrear = true
-     if(rolCreador=='Gerente'&&(nuevoRol=='admin')){
+        if(rolCreador=='Gerente'){
           //no puede crear
-          puedeCrear = false;
+          puedeCrear = true;
         }
-        if(rolCreador== 'Agendador' && (nuevoRol!='Cliente'&& nuevoRol!='Conductor')){
+        if(rolCreador== 'Agendador' && (nuevoRol!='Cliente'&& nuevoRol!='Conductor')){ //el agendador solo puede crear cliente y conductores
           // no puede crear
           puedeCrear = false;
         }
