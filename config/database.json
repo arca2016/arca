@@ -20,7 +20,7 @@
         "username": "arca2016",
         "password": "exitoarca2016",
         "database": "arca",
-        "host": "arca.cai3wrgpejuz.us-west-2.rds.amazonaws.com",
+        "host": "arcalab.cai3wrgpejuz.us-west-2.rds.amazonaws.com:5432",
         "dialect": "postgres",
         "define": {
             "timestamps": true,
@@ -28,7 +28,7 @@
         },
         "logging": true
     },
-    "port":3000
+    "port":4000
   },
   "production": {
     "db":{
