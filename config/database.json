@@ -19,8 +19,8 @@
     "db":{
         "username": "arca2016",
         "password": "exitoarca2016",
-        "database": "arca",
-        "host": "arcalab.cai3wrgpejuz.us-west-2.rds.amazonaws.com:5432",
+        "database": "ArcaLab",
+        "host": "arcalab.cai3wrgpejuz.us-west-2.rds.amazonaws.com",
         "dialect": "postgres",
         "define": {
             "timestamps": true,
