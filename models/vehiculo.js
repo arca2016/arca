@@ -22,6 +22,15 @@ var Vehiculo = sequelize.define("Vehiculo", {
     marca:DataTypes.STRING,
     referencia:DataTypes.STRING,
     uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1}
+    relacion:{              
+      type:   DataTypes.ENUM,
+      values: ["Propio","Afiliado","Tercero"]
+    },
+    activo:DataTypes.BOOLEAN,
+    tipo:{              
+      type:   DataTypes.ENUM,
+      values: ["Bus","Buseta","Camioneta","Campero","Microbus"]
+    },
 
 
 }, {
@@ -31,7 +40,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
             Vehiculo.hasMany(models.Documento);
             Vehiculo.hasMany(models.Viaje);
             Vehiculo.belongsTo(models.Usuario);
-
+            Vehiculo.belongsTo(models.Usuario,{as:'Propietario'});
         },
         getById: function(id) {
             return Vehiculo.findById(id);
