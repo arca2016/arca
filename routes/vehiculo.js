@@ -23,6 +23,7 @@ router.route('/')
 					res.send(result)
 				},
 				function(err){
+					console.dir(err)
 					res.status(500);
 					res.send(err.message);
 				})

@@ -26,7 +26,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
       type:   DataTypes.ENUM,
       values: ["Propio","Afiliado","Tercero"]
     },
-    activo:DataTypes.BOOLEAN,
+    activo:{type:DataTypes.BOOLEAN, defaultValue: true},
     tipo:{              
       type:   DataTypes.ENUM,
       values: ["Bus","Buseta","Camioneta","Campero","Microbus"]
@@ -46,7 +46,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
         getById: function(id) {
             return Vehiculo.findById(id);
         },
-        crear: function(vehiculo){
+        crear: function(vehiculo){         
             vehiculo.placa = vehiculo.placa.toUpperCase();
             return Vehiculo.build(vehiculo).save();
         },

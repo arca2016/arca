@@ -15,6 +15,21 @@ router.route('/')
 			})
 
 	})
+
+router.route('/listCoductoresYAfiliados')
+.get(function(req, res) {
+			Usuario.getUsuarioPorId(req.usuario.id).then(function(usuario){
+				Usuario.listCoductoresYAfiliados(usuario.AgenciumId).then(function(result){
+						res.send(result)
+				})
+
+			},function(err){
+				    res.status(500)
+					res.send(err)
+			})
+
+	})
+
 router.route('/:rol')
 .get(function(req, res) {
 			Usuario.getUsuarioPorId(req.usuario.id).then(function(usuario){

@@ -97,27 +97,26 @@ router.route('/crearUsuario')
 	
 	var puedeCrear = usuario.tienePermiso(rolCreador,nuevoRol)
 	if(puedeCrear){
-
+		nuevoUsuario.password = nuevoUsuario.password || "123456"
 		pass.hash(nuevoUsuario.password, function (err, salt, hash) {
-		if (err) {
-			res.status(500);
-			res.send(err);
-			re
-		}
-			nuevoUsuario.salt = salt;
-			nuevoUsuario.hash = hash;
-		usuario.build(nuevoUsuario).save().then(function (result) {			
-			res.send(result);
-		}).catch(function (error) {
-			console.dir(error)
-			if (error.name == 'SequelizeUniqueConstraintError') {
-				res.status(409);
-				res.send(error);
+			if (err) {
+				res.status(500);
+				res.send(err);			
 			}
-		})
+				nuevoUsuario.salt = salt;
+				nuevoUsuario.hash = hash;
+			usuario.build(nuevoUsuario).save().then(function (result) {			
+				res.send(result);
+			}).catch(function (error) {
+				console.dir(error)
+				if (error.name == 'SequelizeUniqueConstraintError') {
+					res.status(409);
+					res.send(error);
+				}
+			})
 
 
-	});
+		});
 	}
 	else{
 		res.status(412);

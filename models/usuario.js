@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     rol:{              
       type:   DataTypes.ENUM,
-      values: ["admin","Gerente","Agendador","Cliente","Conductor"]
+      values: ["admin","Gerente","Agendador","Cliente","Conductor","Afiliado"]
     },
 
     telefono: DataTypes.STRING,
@@ -58,9 +58,23 @@ module.exports = function(sequelize, DataTypes) {
     listEmpleados: function(agencia,rol) { 
       var rol = rol || { $ne: 'Cliente'  }
       return Usuario.findAll({
+        
         attributes:  { exclude: ['updatedAt','createdAt','hash','salt'] },
         where:{  
           rol:  rol,
+          AgenciumId: agencia
+        },include: [
+          {model: sequelize.model('Documento')},
+          ]
+      });   
+    },
+    listCoductoresYAfiliados: function(agencia) { 
+
+      return Usuario.findAll({
+        order: ['nombre'],
+        attributes:  { exclude: ['updatedAt','createdAt','hash','salt'] },
+        where:{  
+           $or:[{rol:'Conductor'},{rol:'Afiliado'}],
           AgenciumId: agencia
         },include: [
           {model: sequelize.model('Documento')},
@@ -126,9 +140,6 @@ module.exports = function(sequelize, DataTypes) {
         if(rolCreador=='Cliente'||rolCreador=='Conductor'){
           // no puede crear
           puedeCrear = false;
-        }
-        if(nuevoRol != 'Gerente'&& nuevoRol != 'Agendador'&& nuevoRol != 'Cliente'&& nuevoRol != 'Conductor'){
-          puedeCrear = false
         }
         console.log("------------------Puede Crear---------------"+ puedeCrear)
         return puedeCrear
