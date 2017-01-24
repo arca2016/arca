@@ -11,6 +11,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
     deletedAt: DataTypes.DATE,
     placa:{type:DataTypes.STRING,unique:true},
     capacidad:DataTypes.INTEGER,
+    capacidadMax:DataTypes.INTEGER,
     modelo:DataTypes.INTEGER,
     audio:DataTypes.BOOLEAN,
     video:DataTypes.BOOLEAN,
@@ -57,7 +58,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                 })
         },
         listarDocumentosProximosAvencer:function(agenciaId){
-          var veintiNueveDiasDesdeHoy =  moment().add(29,'d').toDate(); 
+          var veintiNueveDiasDesdeHoy =  moment().add(29,'d').toDate();
           console.log("-----------------"+veintiNueveDiasDesdeHoy+"-------------------")
              return Vehiculo.findAll({
                   where:{
@@ -101,8 +102,8 @@ var Vehiculo = sequelize.define("Vehiculo", {
                      ]
                 });
             }
-        	
-            
+
+
         },
 
         buscarDisponibles:function(filtro,nuevaFechaInicio,nuevaFechaFin){
@@ -126,9 +127,9 @@ var Vehiculo = sequelize.define("Vehiculo", {
     },
     instanceMethods:{
         estaDisponible:function(nuevaFechaInicio,nuevaFechaFin){
-           
+
            for (var i = this.Viajes.length - 1; i >= 0; i--) {
-            
+
                 console.log("---------------Viajes de "+this.placa+"-----------------------------------------------")
                 console.log(new Date(this.Viajes[i].fechaInicio) +">="+nuevaFechaInicio)
                 console.log(new Date(this.Viajes[i].fechaInicio) >= nuevaFechaInicio)
@@ -138,15 +139,15 @@ var Vehiculo = sequelize.define("Vehiculo", {
                 console.log(new Date(this.Viajes[i].fechaInicio)>=  nuevaFechaInicio);
                 console.log(new Date(this.Viajes[i].fechaInicio) +">="+ nuevaFechaInicio)
                 console.log(new Date(this.Viajes[i].fechaFin)<= nuevaFechaFin)
-               
+
 
                 //El viaje existente empieza despues pero empieza antes antes que se acabe el nuevo                              el viaje actual empieza antes que empieze el nuevo pero no acaba antes que empieze el nuevo
                 if((new Date(this.Viajes[i].fechaInicio) >= nuevaFechaInicio &&   new Date(this.Viajes[i].fechaInicio) <= nuevaFechaFin) || (new Date(this.Viajes[i].fechaInicio)<= nuevaFechaInicio && new Date(this.Viajes[i].fechaFin)>= nuevaFechaInicio)){
-                  
+
                     console.log("Ocupado")
                     return false;
                   }
-                  
+
             }
             console.log("Disponible")
             return true;
