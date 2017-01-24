@@ -1,12 +1,27 @@
 {
   "development": {
-    "db":{    
-        "username": "postgres",    
+    "db":{
+        "username": "postgres",
         "password": "postgres",
         "database": "arca-dev",
         "host": "localhost",
         "dialect": "postgres",
-        
+
+        "define": {
+            "timestamps": true,
+            "paranoid": true
+        },
+        "logging": true
+    },
+    "port":3000
+  },
+  "lab": {
+    "db":{
+        "username": "arca2016",
+        "password": "exitoarca2016",
+        "database": "ArcaLab",
+        "host": "arcalab.cai3wrgpejuz.us-west-2.rds.amazonaws.com",
+        "dialect": "postgres",
         "define": {
             "timestamps": true,
             "paranoid": true
@@ -31,4 +46,3 @@
     "port":3000
   }
 }
-
