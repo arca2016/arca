@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     rol:{              
       type:   DataTypes.ENUM,
-      values: ["admin","Gerente","Agendador","Cliente","Conductor","Afiliado"]
+      values: ["admin","Gerente","Agendador","Cliente","Conductor","Propietario"]
     },
 
     telefono: DataTypes.STRING,
@@ -74,7 +74,7 @@ module.exports = function(sequelize, DataTypes) {
         order: ['nombre'],
         attributes:  { exclude: ['updatedAt','createdAt','hash','salt'] },
         where:{  
-           $or:[{rol:'Conductor'},{rol:'Afiliado'}],
+           $or:[{rol:'Conductor'},{rol:'Propietario'}],
           AgenciumId: agencia
         },include: [
           {model: sequelize.model('Documento')},

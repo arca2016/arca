@@ -11,7 +11,6 @@ var Vehiculo = sequelize.define("Vehiculo", {
     deletedAt: DataTypes.DATE,
     placa:{type:DataTypes.STRING,unique:true},
     capacidad:DataTypes.INTEGER,
-    capacidadMax:DataTypes.INTEGER,
     modelo:DataTypes.INTEGER,
     audio:DataTypes.BOOLEAN,
     video:DataTypes.BOOLEAN,
@@ -30,9 +29,10 @@ var Vehiculo = sequelize.define("Vehiculo", {
     activo:{type:DataTypes.BOOLEAN, defaultValue: true},
     tipo:{              
       type:   DataTypes.ENUM,
-      values: ["Bus","Buseta","Camioneta","Campero","Microbus"]
+      values: ["Bus","Buseta","Camioneta","Campero","Microbus","Automovil"]
     },
-    numeroInterno:DataTypes.INTEGER
+    numeroInterno:DataTypes.STRING,
+    fechaAfiliacion:DataTypes.DATE
 
 
 }, {
