@@ -31,6 +31,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
       type:   DataTypes.ENUM,
       values: ["Bus","Buseta","Camioneta","Campero","Microbus"]
     },
+    numeroInterno:DataTypes.INTEGER
 
 
 }, {
