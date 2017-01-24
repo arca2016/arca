@@ -99,13 +99,15 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 			 	for(var k in filtro){
    					if(!filtro[k]) delete filtro[k];
    				}
-
-
+					console.log("min: " + filtro.capacidad);
+					console.log("max: " + filtro.capacidadMax);
 				 if(filtro.capacidad){
 					 filtro.capacidad ={
-						 $gte:filtro.capacidad
+						 $between: [filtro.capacidad, filtro.capacidadMax]
 					 }
+					 delete filtro.capacidadMax;
 				 }
+				 console.dir(filtro.capacidad);
 
 			 	if(filtro.fechaInicio && filtro.fechaFin){
 			 		var nuevaFechaInicio = new Date(filtro.fechaInicio),
@@ -113,10 +115,8 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 			 		delete filtro.fechaInicio;
 			 		delete filtro.fechaFin
 
-
-
 			 		models.Vehiculo.buscarDisponibles(filtro,nuevaFechaInicio,nuevaFechaFin).then(function(result){
-			 			
+
 					res.send(result)
 					},
 					function(err){
@@ -140,9 +140,6 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 					})
 				}
 			})
-
 })
-
-
 
 module.exports = router;
