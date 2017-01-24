@@ -21,7 +21,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
     imagen:DataTypes.STRING,
     marca:DataTypes.STRING,
     referencia:DataTypes.STRING,
-    uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1}
+    uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1},
     relacion:{              
       type:   DataTypes.ENUM,
       values: ["Propio","Afiliado","Tercero"]
