@@ -30,11 +30,17 @@ var Tag = sequelize.define("Tag", {
             return Tag.findAll({ where:atributos});
         },
         eliminar: function(options){
-            return Tag.destroy({
-                  where:{
-                    options
-                  }
-            });
+            return Tag.buscar(options)
+                .then(function(tag){
+                    if(!tag){
+                        Promise.reject("Tag no encontrado")
+                    }
+                    else{
+                        return tag.destroy().then(function(result){
+                            return(result);
+                        })
+                    }
+                });
         },
         crear: function(tag){
             return Tag.build(tag).save();
