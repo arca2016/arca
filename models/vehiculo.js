@@ -3,7 +3,7 @@ var moment = require('moment')
 var models  = require(__dirname);
 var Q = require('q')
 var  STATUS_CANCELADO = 'Cancelado';
-var  STATUS_CONFIRMADO =  'Confirmado'
+var  STATUS_CONFIRMADO =  'Confirmado';
 
 
 module.exports = function(sequelize, DataTypes) {
@@ -32,7 +32,8 @@ var Vehiculo = sequelize.define("Vehiculo", {
       values: ["Bus","Buseta","Camioneta","Campero","Microbus","Automovil"]
     },
     numeroInterno:DataTypes.STRING,
-    fechaAfiliacion:DataTypes.DATE
+    fechaAfiliacion:DataTypes.DATE,
+
 
 
 }, {
@@ -41,6 +42,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
         associate: function(models) {
             Vehiculo.hasMany(models.Documento);
             Vehiculo.hasMany(models.Viaje);
+            Vehiculo.belongsToMany(models.Tag,{through: 'TagVehiculo'})
             Vehiculo.belongsTo(models.Usuario);
             Vehiculo.belongsTo(models.Usuario,{as:'Propietario'});
         },
@@ -95,6 +97,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                      include: [
                          {model: sequelize.model('Usuario')},
                          {model: sequelize.model('Documento')},
+                         {model: sequelize.model('Tag')},
                          {model: sequelize.model('Viaje'), where:{ estado: statusViaje },required: false }
                      ]
                 });
@@ -108,6 +111,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                      include: [
                          {model: sequelize.model('Usuario')},
                          {model: sequelize.model('Documento')},
+                         {model: sequelize.model('Tag')},
                          {model: sequelize.model('Viaje')}
                      ]
                 });

@@ -166,6 +166,7 @@ db.sequelize.sync().then(function(){
 		var usuario = 	 require('./routes/usuario');
 		var documento =  require('./routes/documento');
 		var destino =    require('./routes/destino');
+		var tag =    require('./routes/tag');
 		}
 		catch(err){
 			console.log("Error cargando las rutas");
@@ -184,6 +185,7 @@ db.sequelize.sync().then(function(){
 		app.use('/usuario',usuario);
 		app.use('/documento',documento);
 		app.use('/destino',destino);
+		app.use('/tag',tag);
 		}
 		catch(err){
 			console.log("Error usando las rutas");
