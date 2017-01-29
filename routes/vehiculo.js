@@ -35,6 +35,9 @@ router.route('/')
 					res.send(result)
 				},
 				function(err){
+					console.log("Error")
+					console.dir(err)
+					console.log("--------------")
 					res.status(500);
 					res.send(err.message);
 				})

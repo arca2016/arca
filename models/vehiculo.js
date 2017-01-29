@@ -54,10 +54,32 @@ var Vehiculo = sequelize.define("Vehiculo", {
             return Vehiculo.build(vehiculo).save();
         },
         actualizar:function(vehiculo){
+             var tags = vehiculo.Tags
+
              return Vehiculo.update(vehiculo,{
                   where:{
                     uuid:vehiculo.uuid
-                  }
+                  },returning: true
+                }).then(function(result){
+                    if(tags && tags.length){
+                        
+                        return Vehiculo.getByUUID(vehiculo.uuid).then(function(vehiculoInstance){
+                          var tagsIds =[]
+                          for (let i = tags.length - 1; i >= 0; i--) {
+                            tagsIds.push(tags[i].id)
+                          }
+                          return vehiculoInstance.setTags(tagsIds).then(function(result){
+                            return result;
+                          })
+                          
+                          
+                        })  
+                       
+
+                    }
+                    else{
+                      return result[1];
+                    }
                 });
         },
         actualizarConductor:function(vehiculo){
