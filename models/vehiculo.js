@@ -110,41 +110,44 @@ var Vehiculo = sequelize.define("Vehiculo", {
                 });
         },
         filtrar:function(filtro,statusViaje){
-            if(statusViaje){
-                return Vehiculo.findAll({
-                     order: [
-                        ['id', 'DESC']
-                    ],
-                     where:filtro,
-                     include: [
-                         {model: sequelize.model('Usuario')},
-                         {model: sequelize.model('Documento')},
-                         {model: sequelize.model('Tag')},
-                         {model: sequelize.model('Viaje'), where:{ estado: statusViaje },required: false }
-                     ]
-                });
+            var tagsIds =[]
+            var includes = 
+            [            {model: sequelize.model('Usuario')},
+                         {model: sequelize.model('Documento')}                
+            ]
+
+            if(filtro.tags && filtro.tags.length){
+              for (var i = filtro.tags.length - 1; i >= 0; i--) {
+                tagsIds.push(filtro.tags[i].id)
+              }
+              
+                includes.push({model: sequelize.model('Tag')  , where:{ id: tagsIds },required: true})
             }
             else{
-                return Vehiculo.findAll({
-                     order: [
-                        ['id', 'DESC']
-                    ],
-                     where:filtro,
-                     include: [
-                         {model: sequelize.model('Usuario')},
-                         {model: sequelize.model('Documento')},
-                         {model: sequelize.model('Tag')},
-                         {model: sequelize.model('Viaje')}
-                     ]
-                });
+                includes.push({model: sequelize.model('Tag')})
+
             }
-
-
+            delete filtro.tags;
+            if(statusViaje){
+                includes.push({model: sequelize.model('Viaje'), where:{ estado: statusViaje },required: false})
+            }
+            console.log("----------------includes-----------")
+            console.dir(includes)
+            console.log("-----------------------------------")
+          
+            return Vehiculo.findAll({
+                 order: [
+                    ['id', 'DESC']
+                ],
+                 where:filtro,
+                 include: includes
+            });
+            
+ 
         },
 
         buscarDisponibles:function(filtro,nuevaFechaInicio,nuevaFechaFin){
         	return Vehiculo.filtrar(filtro,STATUS_CONFIRMADO).then(function(vehiculosAgencia){
-            console.dir(vehiculosAgencia)
         		var vehiculosDisponibles = [],
         		vehiculo=[];
         		for (var i = vehiculosAgencia.length - 1; i >= 0; i--) {

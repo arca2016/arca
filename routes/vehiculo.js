@@ -110,7 +110,6 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 					 }
 					 delete filtro.capacidadMax;
 				 }
-				 console.dir(filtro.capacidad);
 
 			 	if(filtro.fechaInicio && filtro.fechaFin){
 			 		var nuevaFechaInicio = new Date(filtro.fechaInicio),
