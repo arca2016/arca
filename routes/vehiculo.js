@@ -94,7 +94,6 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 .post(function(req,res) {
 
 			var userDecoded =  req.usuario;
-
 			 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
 			 	var filtro =  req.body.filtro || {};
 			 	filtro.AgenciumId = usuario.AgenciumId
@@ -129,7 +128,11 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 			 	}
 			 	else{
 
+					
 				 	filtro.AgenciumId = usuario.AgenciumId;
+				 	console.log("-------------------")
+					console.dir(filtro)
+					console.log("-------------------")
 					models.Vehiculo.filtrar(filtro).then(function(result){
 						res.send(result)
 					},

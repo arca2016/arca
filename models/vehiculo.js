@@ -121,19 +121,20 @@ var Vehiculo = sequelize.define("Vehiculo", {
                 tagsIds.push(filtro.tags[i].id)
               }
               
-                includes.push({model: sequelize.model('Tag')  , where:{ id: tagsIds },required: true})
+                includes.push({model: sequelize.model('Tag')  , where:{ id: tagsIds },required: true});
             }
             else{
-                includes.push({model: sequelize.model('Tag')})
+                includes.push({model: sequelize.model('Tag')});
 
             }
             delete filtro.tags;
             if(statusViaje){
-                includes.push({model: sequelize.model('Viaje'), where:{ estado: statusViaje },required: false})
+                includes.push({model: sequelize.model('Viaje'), where:{ estado: statusViaje },required: false});
             }
-            console.log("----------------includes-----------")
-            console.dir(includes)
-            console.log("-----------------------------------")
+            else{
+                includes.push({model: sequelize.model('Viaje')});
+            }
+            
           
             return Vehiculo.findAll({
                  order: [
