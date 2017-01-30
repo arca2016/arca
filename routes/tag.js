@@ -5,7 +5,7 @@ var Tag = require('./../models').Tag;
 
 router.route('/')
 .get(function(req,res) {
-	Tag.listar(req.usuario.AgenciumId).then(function(result){
+	Tag.listar({AgenciumId:req.usuario.AgenciumId}).then(function(result){
   		res.send(result);
   	})
 })
