@@ -66,6 +66,13 @@ module.exports = function(sequelize, DataTypes) {
 
                 })
             },
+            actualizar:function(viaje){
+                 return Viaje.update(viaje,{
+                      where:{
+                        uuid:viaje.uuid
+                      }
+                    });
+            },
             crearRecurrente: function(usuario,vehiculoId,fechaInicio,fechaFin,tiempoDeViaje,incluyeFestivos,diasDeLaSemana,descripcion){
             	var recurrenteId = uuid();
 

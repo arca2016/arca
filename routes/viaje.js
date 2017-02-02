@@ -18,8 +18,8 @@ var models = require('./../models');
 router.route('/')
 .post(function(req,res) {
 	var userDecoded = req.usuario;
-	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){	 
-	 console.dir(req.body.viaje)			
+	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
+	 console.dir(req.body.viaje)
 				models.Viaje.crear(usuario,req.body.viaje).then(function(result){
 					res.send(result)
 				},
@@ -28,54 +28,60 @@ router.route('/')
 					console.dir(err.message)
 					res.send(err.message)
 				})
-			
-		
-		})
-	
-
-	
+		})	
 })
+.patch(function(req,res) {
+				models.Viaje.actualizar(req.body.viaje).then(function(result){
+					res.send(result)
+				},
+				function(err){
+					res.status(500);
+					res.send(err.message);
+				})
+});
+
+
 router.route('/recurrente')
 .post(function(req,res) {
 	var userDecoded = req.usuario;
 	 models.Usuario.getUsuarioPorId(userDecoded.id).then(function(usuario){
-	 	
-			
+
+
 				models.Viaje.crearRecurrente(usuario,req.body.vehiculoId,req.body.fechaInicio,req.body.fechaFin,req.body.tiempoDeViaje,req.body.incluyeFestivos,req.body.diasDeLaSemana,req.body.descripcion).then(function(result){
 					res.send(result)
 				},
 				function(err){
 					console.log("----------------")
-					console.log(typeof err)						
-					console.log("---------------")					
+					console.log(typeof err)
+					console.log("---------------")
 					res.status(412);
 					res.send(err.message)
 				})
-			
-		
+
+
 		})
-	
+
 })
 
 router.route('/cancelarViaje')
 .post(function(req,res) {
-	var uuid = req.body.uuid;	
-	 	
-			
+	var uuid = req.body.uuid;
+
+
 		models.Viaje.getByUuid(uuid).then(function(viaje){
 			viaje.cancelarViaje().then(function(result){
 				res.send(result)
 			})
-			
+
 		},
 		function(err){
 			res.status(500);
 			res.send(err)
 		})
-	
-		
+
+
 	})
-	
+
 
 
 module.exports = router;
