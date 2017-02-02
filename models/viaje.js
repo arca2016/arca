@@ -19,8 +19,12 @@ module.exports = function(sequelize, DataTypes) {
         recurreteFechaFin:DataTypes.DATE,
         recurreteDiasDeLaSemana:DataTypes.JSON,
         uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV4},
-        estado:{type:DataTypes.ENUM('Confirmado', 'Cancelado'),defaultValue:'Confirmado'}
-
+        estado:{type:DataTypes.ENUM('Confirmado', 'Cancelado'),defaultValue:'Confirmado'},
+        valorPagar:DataTypes.DOUBLE,
+        valorCobrar:DataTypes.DOUBLE,
+        planilla:DataTypes.STRING,
+        cliente:DataTypes.STRING,
+        solicitante:DataTypes.STRING
     }, {
         classMethods: {
 
