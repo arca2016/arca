@@ -54,7 +54,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
             return Vehiculo.build(vehiculo).save();
         },
         contar:function(agenciaId){
-          return Vehiculo.count([{where:{AgenciumId:agenciaId}}]);
+          return Vehiculo.count({where:{AgenciumId:agenciaId}});
         },
         vehiculoMasSolicitadoYTotalViajes:function(agenciaId){
           return Vehiculo.obtenerconViajesEnRangoDeFechas({AgenciumId:agenciaId}).then(function(vehiculos){
@@ -72,6 +72,8 @@ var Vehiculo = sequelize.define("Vehiculo", {
                     }
                   }
               }
+              
+              delete vehiculoMasSolicitado.dataValues.Viajes;             
               return {vehiculoMasSolicitado,totalViajesAgendandados};
             }            
           })

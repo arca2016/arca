@@ -77,7 +77,7 @@ router.route('/dasboard')
 
 		promises.push(models.Vehiculo.contar(req.usuario.AgenciumId)
 		.then(function(count){
-			promises.push({count})
+			return({count})
 		}))
 
 		promises.push(models.Vehiculo.vehiculoMasSolicitadoYTotalViajes(req.usuario.AgenciumId)
@@ -86,7 +86,7 @@ router.route('/dasboard')
 		}))
 
 		Promise.all(promises).then(function(dasboard){
-			return dasboard
+			res.send(dasboard)
 		})
 	});
 router.route('/viajes/:uuid')
