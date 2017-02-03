@@ -53,6 +53,29 @@ var Vehiculo = sequelize.define("Vehiculo", {
             vehiculo.placa = vehiculo.placa.toUpperCase();
             return Vehiculo.build(vehiculo).save();
         },
+        contar:function(agenciaId){
+          return Vehiculo.count([{where:{AgenciumId:agenciaId}}]);
+        },
+        vehiculoMasSolicitadoYTotalViajes:function(agenciaId){
+          return Vehiculo.obtenerconViajesEnRangoDeFechas({AgenciumId:agenciaId}).then(function(vehiculos){
+            if(vehiculos.length){
+              var totalViajesAgendandados = 0
+              var vehiculoMasSolicitado ={}
+              var masPedidos = vehiculos[0].Viajes.length
+              for (var i = vehiculos.length - 1; i >= 0; i--) {
+                  let vehiculo = vehiculos[i];
+                  if(vehiculo.Viajes.length) {
+                    totalViajesAgendandados += vehiculo.Viajes.length;
+                    if(vehiculo.Viajes.length >=masPedidos){
+                      vehiculoMasSolicitado = vehiculo;
+                      masPedidos = vehiculo.Viajes.length;
+                    }
+                  }
+              }
+              return {vehiculoMasSolicitado,totalViajesAgendandados};
+            }            
+          })
+        },
         actualizar:function(vehiculo){
              var tags = vehiculo.Tags
 
@@ -108,6 +131,32 @@ var Vehiculo = sequelize.define("Vehiculo", {
                     uuid:uuid
                   }
                 });
+        },
+        obtenerconViajesEnRangoDeFechas:function(filtro){
+          
+          filtro.statusViaje = filtro.statusViaje || STATUS_CONFIRMADO;
+
+          var includes =  [{model: sequelize.model('Viaje'), where:{estado: filtro.statusViaje},required: false}]
+
+          if(filtro.fechaInicio&&filtro.fechaFin){
+            includes =   [{model: sequelize.model('Viaje'), where:{ estado: filtro.statusViaje,fechaInicio:{$gte:filtro.fechaInicio},fechaFin:{$lte:filtro.fechaFin} },required: false}]
+
+          }
+          if(filtro.tags && filtro.tags.length){
+              for (var i = filtro.tags.length - 1; i >= 0; i--) {
+                tagsIds.push(filtro.tags[i].id)
+              }
+              
+              includes.push({model: sequelize.model('Tag')  , where:{ id: tagsIds },required: true});
+              delete filtro.tags;
+          }
+          return Vehiculo.findAll({
+                 order: [
+                    ['id', 'DESC']
+                ],
+                 where:filtro,
+                 include: includes
+            });
         },
         filtrar:function(filtro,statusViaje){
             var tagsIds =[]

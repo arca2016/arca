@@ -71,7 +71,24 @@ router.route('/:uuid')
 			}
 		});
 	});
+router.route('/dasboard')
+.get(function(req,res){
+		var promises = []
 
+		promises.push(models.Vehiculo.contar(req.usuario.AgenciumId)
+		.then(function(count){
+			promises.push({count})
+		}))
+
+		promises.push(models.Vehiculo.vehiculoMasSolicitadoYTotalViajes(req.usuario.AgenciumId)
+		.then(function(result){
+			return result
+		}))
+
+		Promise.all(promises).then(function(dasboard){
+			return dasboard
+		})
+	});
 router.route('/viajes/:uuid')
 .get(function(req,res){
 
@@ -89,6 +106,17 @@ router.route('/viajes/:uuid')
 			}
 		});
 	});
+
+
+router.route('/obtenerconViajesEnRangoDeFechas') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
+.post(function(req,res) {
+	req.body.filtro.AgenciumId = req.usuario.AgenciumId
+	models.Vehiculo.obtenerconViajesEnRangoDeFechas(req.body.filtro).then(function(vehiculo){
+		res.send(vehiculo);
+	})
+});
+
+
 
 router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
 .post(function(req,res) {
