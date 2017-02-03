@@ -22,12 +22,12 @@ var Vehiculo = sequelize.define("Vehiculo", {
     marca:DataTypes.STRING,
     referencia:DataTypes.STRING,
     uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV1},
-    relacion:{              
+    relacion:{
       type:   DataTypes.ENUM,
       values: ["Propio","Afiliado","Tercero"]
     },
     activo:{type:DataTypes.BOOLEAN, defaultValue: true},
-    tipo:{              
+    tipo:{
       type:   DataTypes.ENUM,
       values: ["Bus","Buseta","Camioneta","Campero","Microbus","Automovil"]
     },
@@ -49,7 +49,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
         getById: function(id) {
             return Vehiculo.findById(id);
         },
-        crear: function(vehiculo){         
+        crear: function(vehiculo){
             vehiculo.placa = vehiculo.placa.toUpperCase();
             return Vehiculo.build(vehiculo).save();
         },
@@ -72,10 +72,10 @@ var Vehiculo = sequelize.define("Vehiculo", {
                     }
                   }
               }
-              
-              delete vehiculoMasSolicitado.dataValues.Viajes;             
+
+              delete vehiculoMasSolicitado.dataValues.Viajes;
               return {vehiculoMasSolicitado,totalViajesAgendandados};
-            }            
+            }
           })
         },
         actualizar:function(vehiculo){
@@ -87,7 +87,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                   },returning: true
                 }).then(function(result){
                     if(tags && tags.length){
-                        
+
                         return Vehiculo.getByUUID(vehiculo.uuid).then(function(vehiculoInstance){
                           var tagsIds =[]
                           for (let i = tags.length - 1; i >= 0; i--) {
@@ -96,10 +96,10 @@ var Vehiculo = sequelize.define("Vehiculo", {
                           return vehiculoInstance.setTags(tagsIds).then(function(result){
                             return result;
                           })
-                          
-                          
-                        })  
-                       
+
+
+                        })
+
 
                     }
                     else{
@@ -135,7 +135,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                 });
         },
         obtenerconViajesEnRangoDeFechas:function(filtro){
-          
+
           filtro.statusViaje = filtro.statusViaje || STATUS_CONFIRMADO;
 
           var includes =  [{model: sequelize.model('Viaje'), where:{estado: filtro.statusViaje},required: false}]
@@ -148,7 +148,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
               for (var i = filtro.tags.length - 1; i >= 0; i--) {
                 tagsIds.push(filtro.tags[i].id)
               }
-              
+
               includes.push({model: sequelize.model('Tag')  , where:{ id: tagsIds },required: true});
               delete filtro.tags;
           }
@@ -163,16 +163,16 @@ var Vehiculo = sequelize.define("Vehiculo", {
         },
         filtrar:function(filtro,statusViaje){
             var tagsIds =[]
-            var includes = 
+            var includes =
             [            {model: sequelize.model('Usuario')},
-                         {model: sequelize.model('Documento')}                
+                         {model: sequelize.model('Documento')}
             ]
 
             if(filtro.tags && filtro.tags.length){
               for (var i = filtro.tags.length - 1; i >= 0; i--) {
                 tagsIds.push(filtro.tags[i].id)
               }
-              
+
                 includes.push({model: sequelize.model('Tag')  , where:{ id: tagsIds },required: true});
             }
             else{
@@ -186,8 +186,8 @@ var Vehiculo = sequelize.define("Vehiculo", {
             else{
                 includes.push({model: sequelize.model('Viaje')});
             }
-            
-          
+
+
             return Vehiculo.findAll({
                  order: [
                     ['id', 'DESC']
@@ -195,8 +195,20 @@ var Vehiculo = sequelize.define("Vehiculo", {
                  where:filtro,
                  include: includes
             });
-            
- 
+
+
+        },
+
+        obtenerPlacas:function(AgenciumId){
+            return Vehiculo.findAll({
+                 order: [
+                    ['id', 'DESC']
+                ],
+                attributes: ['placa'],
+                where:{
+                  AgenciumId:AgenciumId
+                }
+            });
         },
 
         buscarDisponibles:function(filtro,nuevaFechaInicio,nuevaFechaFin){

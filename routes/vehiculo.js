@@ -116,7 +116,13 @@ router.route('/obtenerconViajesEnRangoDeFechas') //automaticamente filtra por ag
 	})
 });
 
-
+router.route('/placas')
+.get(function(req,res){
+	req.body.filtro.AgenciumId = req.usuario.AgenciumId
+	models.Vehiculo.obtenerPlacas().then(function(placas){
+		res.send(placas);
+	})
+});
 
 router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
 .post(function(req,res) {
@@ -156,7 +162,7 @@ router.route('/filtrar') //automaticamente filtra por agencia, si no se le pasa 
 			 	}
 			 	else{
 
-					
+
 				 	filtro.AgenciumId = usuario.AgenciumId;
 				 	console.log("-------------------")
 					console.dir(filtro)
