@@ -71,7 +71,7 @@ router.route('/:uuid')
 			}
 		});
 	});
-router.route('/dasboard')
+router.route('/dashboard')
 .get(function(req,res){
 		var promises = []
 
