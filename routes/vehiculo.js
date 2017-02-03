@@ -118,8 +118,7 @@ router.route('/obtenerconViajesEnRangoDeFechas') //automaticamente filtra por ag
 
 router.route('/placas')
 .get(function(req,res){
-	req.body.filtro.AgenciumId = req.usuario.AgenciumId
-	models.Vehiculo.obtenerPlacas().then(function(placas){
+	models.Vehiculo.obtenerPlacas(req.usuario.AgenciumId).then(function(placas){
 		res.send(placas);
 	})
 });
