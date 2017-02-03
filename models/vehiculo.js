@@ -150,6 +150,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
               includes.push({model: sequelize.model('Tag')  , where:{ id: tagsIds },required: true});
               delete filtro.tags;
           }
+          delete filtro.statusViaje;
           return Vehiculo.findAll({
                  order: [
                     ['id', 'DESC']
