@@ -154,7 +154,7 @@ var transformacionDeFechas = function(req,res,next){
 
 
 
-	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/Excel','/auth/logout','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
+	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/\/Excel\/\.*/,'/auth/logout','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
 
 	app.use(function(err, req, res, next) {
 		console.dir(err);
