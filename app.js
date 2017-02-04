@@ -206,7 +206,7 @@ db.sequelize.sync().then(function(){
 		var nodeExcel = require('excel-export');
 		
 		app.use('/Excel', function(req, res){
-			return db.Vehiculo.soloVehiculos(1).then(function(vehiculos){
+			return db.Vehiculo.soloVehiculos(req.usuario.AgenciumId).then(function(vehiculos){
 				var buscarPlaca = function(id){
 					for (var i = vehiculos.length - 1; i >= 0; i--) {
 						if(vehiculos[i].id == id){
@@ -238,19 +238,18 @@ db.sequelize.sync().then(function(){
 			        
 			    },{
 			        caption:'Fecha inicio',
-			        type:'date',
+			        type:'string',
 			        beforeCellWrite:function(){
-			            return function(row, cellData, eOpt){
-
-			              	var fecha = new Date(cellData)			            	
+			            return function(row, cellData, eOpt){									
+			              	var fecha = new Date(cellData)			
 			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
 			            } 
 			        }()
 			    },{
 			        caption:'Fecha fin',
-			        type:'date',
+			        type:'string',
 			        beforeCellWrite:function(){
-			            return function(row, cellData, eOpt){
+			            return function(row, cellData, eOpt){			            	
 			              	var fecha = new Date(cellData)			            	
 			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
 			            } 
@@ -259,8 +258,7 @@ db.sequelize.sync().then(function(){
 			        caption:'Fecha agendamiento',
 			        type:'string',
 			        beforeCellWrite:function(){
-			            return function(row, cellData, eOpt){
-			            	console.log("Created At")
+			            return function(row, cellData, eOpt){			            	
 			            	var fecha = new Date(cellData)			            	
 			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
 			            } 
@@ -270,8 +268,7 @@ db.sequelize.sync().then(function(){
 			        type:'string',
 			        beforeCellWrite:function(){
 			            return function(row, cellData, eOpt){
-			              	var fecha = new Date(cellData)			            	
-			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
+			              	return buscarPlaca(cellData);
 			            } 
 			        }()
 			    }
@@ -299,8 +296,9 @@ db.sequelize.sync().then(function(){
 			    conf.rows = datos
 			    var result = nodeExcel.execute(conf);
 			    res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-			    res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+			    res.setHeader("Content-Disposition", "attachment; filename=" + "Reporte Arca.xlsx");
 			    res.end(result, 'binary');
+			    
 			    
 			 })
 
