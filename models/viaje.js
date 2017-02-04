@@ -158,15 +158,15 @@ module.exports = function(sequelize, DataTypes) {
 
         },
         instanceMethods:{
-            cancelarViaje:function(){
-              this.estado = STATUS_CANCELADO;
-              return this.save();
-            },
             cancelarRecurrentes:function(){
               return Viaje.update(
                 {estado:STATUS_CANCELADO},
                 {where:{recurrenteId:this.recurrenteId}}
               );
+            },
+            cancelarViaje:function(){
+              this.estado = STATUS_CANCELADO;
+              return this.save();
             }
 
         }
