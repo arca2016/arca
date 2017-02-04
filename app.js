@@ -206,7 +206,7 @@ db.sequelize.sync().then(function(){
 		var nodeExcel = require('excel-export');
 		
 		app.use('/Excel', function(req, res){
-			return db.Vehiculo.soloVehiculos(req.usuario.AgenciumId).then(function(vehiculos){
+			return db.Vehiculo.soloVehiculos(req.query.angenciaId).then(function(vehiculos){
 				var buscarPlaca = function(id){
 					for (var i = vehiculos.length - 1; i >= 0; i--) {
 						if(vehiculos[i].id == id){
