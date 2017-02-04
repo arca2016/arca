@@ -86,7 +86,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                     uuid:vehiculo.uuid
                   },returning: true
                 }).then(function(result){
-                    if(tags && tags.length){
+                    
 
                         return Vehiculo.getByUUID(vehiculo.uuid).then(function(vehiculoInstance){
                           var tagsIds =[]
@@ -101,10 +101,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
                         })
 
 
-                    }
-                    else{
-                      return result[1];
-                    }
+                    
                 });
         },
         actualizarConductor:function(vehiculo){
@@ -142,9 +139,11 @@ var Vehiculo = sequelize.define("Vehiculo", {
 
           if(filtro.fechaInicio&&filtro.fechaFin){
             includes =   [{model: sequelize.model('Viaje'), where:{ estado: filtro.statusViaje,fechaInicio:{$gte:filtro.fechaInicio},fechaFin:{$lte:filtro.fechaFin} },required: false}]
-
+            delete filtro.fechaInicio
+            delete filtro.fechaFin
           }
           if(filtro.tags && filtro.tags.length){
+              var tagsIds = [];
               for (var i = filtro.tags.length - 1; i >= 0; i--) {
                 tagsIds.push(filtro.tags[i].id)
               }
@@ -153,9 +152,13 @@ var Vehiculo = sequelize.define("Vehiculo", {
               delete filtro.tags;
           }
           delete filtro.statusViaje;
+          console.log("filtroooo")
+          console.dir(filtro)
+          console.log("includes")
+          console.dir(filtro)
           return Vehiculo.findAll({
                  order: [
-                    ['id', 'DESC']
+                    ['placa']
                 ],
                  where:filtro,
                  include: includes

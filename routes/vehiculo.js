@@ -111,6 +111,8 @@ router.route('/viajes/:uuid')
 router.route('/obtenerconViajesEnRangoDeFechas') //automaticamente filtra por agencia, si no se le pasa un filtro vacio lista todos los de la agencia en la cual se encuentre logueado el usuario
 .post(function(req,res) {
 	req.body.filtro.AgenciumId = req.usuario.AgenciumId
+	console.log("filtroooo")
+	console.dir(req.body.filtro)
 	models.Vehiculo.obtenerconViajesEnRangoDeFechas(req.body.filtro).then(function(vehiculo){
 		res.send(vehiculo);
 	})
