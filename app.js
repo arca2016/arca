@@ -12,6 +12,7 @@ var multiparty 	   = require('connect-multiparty');
 var i18n 		   = require('i18n'); 
 var app 		   = express();
 var secret         = 'supersecret'
+
 //*********
 var cors = require('cors');
 var express = require('express');
@@ -19,6 +20,22 @@ var app = express();
 app.use(cors());
 app.options('*', cors());
 
+Date.prototype.format = function(fstr, utc) {
+  var that = this;
+  utc = utc ? 'getUTC' : 'get';
+  return fstr.replace (/%[YmdHMS]/g, function (m) {
+    switch (m) {
+    case '%Y': return that[utc + 'FullYear'] ();
+    case '%m': m = 1 + that[utc + 'Month'] (); break;
+    case '%d': m = that[utc + 'Date'] (); break;
+    case '%H': m = that[utc + 'Hours'] (); break;
+    case '%M': m = that[utc + 'Minutes'] (); break;
+    case '%S': m = that[utc + 'Seconds'] (); break;
+    default: return m.slice (1); 
+    }    
+    return ('0' + m).slice (-2);
+  });
+};
 ///////////
 var authenticate   = jwt({
   secret: secret,
@@ -137,7 +154,7 @@ var transformacionDeFechas = function(req,res,next){
 
 
 
-	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/auth/logout','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
+	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','excel','/auth/logout','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
 
 	app.use(function(err, req, res, next) {
 		console.dir(err);
@@ -186,6 +203,113 @@ db.sequelize.sync().then(function(){
 		app.use('/documento',documento);
 		app.use('/destino',destino);
 		app.use('/tag',tag);
+		var nodeExcel = require('excel-export');
+		
+		app.use('/Excel', function(req, res){
+			return db.Vehiculo.soloVehiculos(1).then(function(vehiculos){
+				var buscarPlaca = function(id){
+					for (var i = vehiculos.length - 1; i >= 0; i--) {
+						if(vehiculos[i].id == id){
+							return vehiculos[i].placa;
+						}
+					}
+					return "Vehiculo no encontrado"
+				}
+
+			return db.Viaje.informe().then(function(viajes){			
+				for ( let i = viajes.length - 1; i >= 0; i--) {
+					viajes[i] = Object.keys(viajes[i]).map(function (key) { return viajes[i][key]; });
+				}
+				var datos = viajes;
+
+			    var conf ={};
+			    conf.name = "Arca";
+			    conf.cols = [{
+			        caption:'Origen',
+			        type:'string'
+			        
+			    },{
+			        caption:'Destino',
+			        type:'string'
+			        
+			    },{
+			        caption:'Descripcion',
+			        type:'string'
+			        
+			    },{
+			        caption:'Fecha inicio',
+			        type:'date',
+			        beforeCellWrite:function(){
+			            return function(row, cellData, eOpt){
+
+			              	var fecha = new Date(cellData)			            	
+			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
+			            } 
+			        }()
+			    },{
+			        caption:'Fecha fin',
+			        type:'date',
+			        beforeCellWrite:function(){
+			            return function(row, cellData, eOpt){
+			              	var fecha = new Date(cellData)			            	
+			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
+			            } 
+			        }()
+			    },{
+			        caption:'Fecha agendamiento',
+			        type:'string',
+			        beforeCellWrite:function(){
+			            return function(row, cellData, eOpt){
+			            	console.log("Created At")
+			            	var fecha = new Date(cellData)			            	
+			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
+			            } 
+			        }()
+			    },{
+			        caption:'Placa',
+			        type:'string',
+			        beforeCellWrite:function(){
+			            return function(row, cellData, eOpt){
+			              	var fecha = new Date(cellData)			            	
+			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
+			            } 
+			        }()
+			    }
+			    ,{
+			        caption:'Valor pagar',
+			        type:'string'
+			    }
+			    ,{
+			        caption:'Valor cobrar',
+			        type:'number'
+			    }
+			    ,{
+			        caption:'Planilla',
+			        type:'string'
+			    }
+			    ,{
+			        caption:'Cliente',
+			        type:'string'
+			    }
+			    ,{
+			        caption:'Solicitante',
+			        type:'string'
+			    }
+			    ];
+			    conf.rows = datos
+			    var result = nodeExcel.execute(conf);
+			    res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+			    res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+			    res.end(result, 'binary');
+			    
+			 })
+
+
+
+
+			})
+			
+		  });
 		}
 		catch(err){
 			console.log("Error usando las rutas");

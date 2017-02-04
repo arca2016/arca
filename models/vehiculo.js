@@ -56,6 +56,10 @@ var Vehiculo = sequelize.define("Vehiculo", {
         contar:function(agenciaId){
           return Vehiculo.count({where:{AgenciumId:agenciaId}});
         },
+        soloVehiculos:function(agenciaId){           
+          return Vehiculo.findAll({attributes: ['id','placa'],where:{AgenciumId:agenciaId},raw:true});
+        
+        },
         vehiculoMasSolicitadoYTotalViajes:function(agenciaId){
           return Vehiculo.obtenerconViajesEnRangoDeFechas({AgenciumId:agenciaId}).then(function(vehiculos){
             if(vehiculos.length){
@@ -152,10 +156,7 @@ var Vehiculo = sequelize.define("Vehiculo", {
               delete filtro.tags;
           }
           delete filtro.statusViaje;
-          console.log("filtroooo")
-          console.dir(filtro)
-          console.log("includes")
-          console.dir(filtro)
+          
           return Vehiculo.findAll({
                  order: [
                     ['placa']

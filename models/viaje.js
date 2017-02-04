@@ -77,6 +77,15 @@ module.exports = function(sequelize, DataTypes) {
                       }
                     });
             },
+            informe:function(){
+                 return Viaje.findAll({
+                      attributes: ['origen','destino','descripcion','fechaInicio','fechaFin','createdAt','VehiculoId','valorPagar','valorCobrar','planilla','cliente','solicitante'],
+                      where:{
+                        recurrenteId:null
+                      }
+                      ,raw:true
+                    });
+            },
             crearRecurrente: function(usuario,vehiculoId,fechaInicio,fechaFin,tiempoDeViaje,incluyeFestivos,diasDeLaSemana,descripcion){
             	var recurrenteId = uuid();
 
