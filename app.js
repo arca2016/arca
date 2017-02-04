@@ -154,7 +154,7 @@ var transformacionDeFechas = function(req,res,next){
 
 
 
-	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/\/Excel\/\.*/,'/auth/logout','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
+	app.use(authenticate.unless({path: ['/favicon.ico','/auth/login','/Excel','/auth/logout','/auth/register',/\/auth\/getSignedURL\/\.*/]}));
 
 	app.use(function(err, req, res, next) {
 		console.dir(err);
@@ -205,8 +205,8 @@ db.sequelize.sync().then(function(){
 		app.use('/tag',tag);
 		var nodeExcel = require('excel-export');
 		
-		app.use('/Excel/:angenciaId', function(req, res){
-			return db.Vehiculo.soloVehiculos(req.params.angenciaId).then(function(vehiculos){
+		app.use('/Excel', function(req, res){
+			return db.Vehiculo.soloVehiculos(req.query.angenciaId).then(function(vehiculos){
 				var buscarPlaca = function(id){
 					for (var i = vehiculos.length - 1; i >= 0; i--) {
 						if(vehiculos[i].id == id){
