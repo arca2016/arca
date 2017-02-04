@@ -9,6 +9,7 @@
     "cookie-parser": "^1.4.0",
     "ejs": "^2.4.1",
     "errorhandler": "~1.0.0",
+    "excel-export": "^0.5.1",
     "express": "4.1.1",
     "express-jwt": "^3.3.0",
     "express-promise": "^0.4.0",
