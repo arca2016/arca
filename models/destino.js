@@ -11,7 +11,8 @@ var Destino = sequelize.define("Destino", {
     nombre:DataTypes.STRING,
     descripcion:DataTypes.STRING(3000),
     ubicacion:DataTypes.STRING,
-    lugaresDestacados:DataTypes.ARRAY(DataTypes.JSON),
+    imagenes:DataTypes.ARRAY(DataTypes.STRING),
+    //lugaresDestacados:DataTypes.ARRAY(DataTypes.JSON),
     comentarios:DataTypes.ARRAY(DataTypes.JSON)
 
 }, {
@@ -26,10 +27,10 @@ var Destino = sequelize.define("Destino", {
         list: function() {
             return Destino.findAll({ order: 'nombre'});
         },
-        crear : function(nombre){
-            return  Destino.findOne({where:{nombre:nombre}}).then(function(resultado){
+        crear : function(destino){
+            return  Destino.findOne({where:{nombre:destino.nombre}}).then(function(resultado){
                 if(!resultado){
-                    return Destino.build({nombre:nombre}).save();
+                    return Destino.build(destino).save();
                 }
                 else{
                     throw "Error ya existe una destino con ese nombre";

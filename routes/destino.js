@@ -12,7 +12,7 @@ router.route('/')
 })
 .post(function(req,res) {
 	
-		Destino.crear(req.body.destino.nombre).then(function(result){
+		Destino.crear(req.body.destino).then(function(result){
 	  		res.send(result);
 	  	},function(err){
 	  			res.status(400).send(err);
