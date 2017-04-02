@@ -24,10 +24,11 @@ var Destino = sequelize.define("Destino", {
         buscarPorNombre : function(nombre){
            return  Destino.findOne({where:{nombre:nombre}});
         },
-        list: function() {
-            return Destino.findAll({ order: 'nombre'});
+        list: function(agenciaId) {
+            return Destino.findAll({where:{AgenciumId:agenciaId}},{ order: 'nombre'});
         },
-        crear : function(destino){
+        crear : function(destino,agenciaId){
+            destino.AgenciumId=agenciaId;
             return  Destino.findOne({where:{nombre:destino.nombre}}).then(function(resultado){
                 if(!resultado){
                     return Destino.build(destino).save();
