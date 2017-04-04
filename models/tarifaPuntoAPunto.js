@@ -19,11 +19,13 @@ var TarifaPuntoAPunto = sequelize.define("TarifaPuntoAPunto", {
             TarifaPuntoAPunto.belongsTo(models.Destino, {as: 'Destino'})
         },
         getById: function(id) {
-            return TarifaPuntoAPunto.findById(id);
+            return TarifaPuntoAPunto.findOne({ where: {id: id} ,include: [{ all: true }]});
         },
         crear: function(tarifaPuntoAPunto){
             
-            return TarifaPuntoAPunto.create(tarifaPuntoAPunto);
+            return TarifaPuntoAPunto.create(tarifaPuntoAPunto).then(function(nuevaTarifa){
+                return TarifaPuntoAPunto.getById(nuevaTarifa.id)
+            });
         },
         listar: function(){
 

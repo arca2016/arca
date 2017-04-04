@@ -25,7 +25,7 @@ var Destino = sequelize.define("Destino", {
            return  Destino.findOne({where:{nombre:nombre}});
         },
         list: function(agenciaId) {
-            return Destino.findAll({where:{AgenciumId:agenciaId}},{ order: 'nombre'});
+            return Destino.findAll({ order: 'nombre'});
         },
         crear : function(destino,agenciaId){
             destino.AgenciumId=agenciaId;

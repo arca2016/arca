@@ -205,7 +205,7 @@ db.sequelize.sync().then(function(){
 		app.use('/documento',documento);
 		app.use('/destino',destino);
 		app.use('/tag',tag);
-		app.use('/tarifasPuntoAPunto',tarifaPuntoAPunto);
+		app.use('/tarifaPuntoAPunto',tarifaPuntoAPunto);
 		
 		var nodeExcel = require('excel-export');
 		
