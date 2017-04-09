@@ -45,7 +45,18 @@ router.route('/')
 			
 })
 
-
+router.route('/origen/:origenId/destino/:destinoId') 
+.get(function(req,res) {	
+				TarifaPuntoAPunto.listarPorOrigenYDestino(req.params.origenId,req.params.destinoId).then(function(result){
+					res.send(result)
+				},
+				function(err){
+					res.status(500);
+					console.dir(err.message)
+					res.send(err.message)
+				})
+			
+})
 
 router.route('/:id')
 .get(function(req,res) {	

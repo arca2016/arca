@@ -31,6 +31,15 @@ var TarifaPuntoAPunto = sequelize.define("TarifaPuntoAPunto", {
 
             return TarifaPuntoAPunto.findAll({ include: [{ all: true }]});
         },
+        listarPorOrigenYDestino: function(origenId,destinoId){
+
+           
+            return TarifaPuntoAPunto.findAll({ 
+                where: {OrigenId: origenId,DestinoId:destinoId}
+            });
+             
+            
+        },
         actualizar: function(tarifaPuntoAPunto){
 
            return TarifaPuntoAPunto.update(tarifaPuntoAPunto,{

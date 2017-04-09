@@ -173,18 +173,18 @@ db.sequelize.sync().then(function(){
 	  		console.log("Listening on " + port);
 		});
 		try{
-		var auth    =    require('./routes/auth');
-		var agencia = 	 require('./routes/agencia');
-		var vehiculo = 	 require('./routes/vehiculo');
-		var viaje = 	 require('./routes/viaje');
-		var diaFestivo = require('./routes/diaFestivo');
-		var marca = 	 require('./routes/marca');
-		var referencia = require('./routes/referencia');
-		var usuario = 	 require('./routes/usuario');
-		var documento =  require('./routes/documento');
-		var destino =    require('./routes/destino');
-		var tag =    	 require('./routes/tag');
-		var tarifaPuntoAPunto =    	 require('./routes/tarifaPuntoAPunto');
+		var auth    		  =   require('./routes/auth');
+		var agencia 		  =   require('./routes/agencia');
+		var vehiculo 		  =   require('./routes/vehiculo');
+		var viaje 			  =   require('./routes/viaje');
+		var diaFestivo        =   require('./routes/diaFestivo');
+		var marca             =   require('./routes/marca');
+		var referencia        =   require('./routes/referencia');
+		var usuario 		  =   require('./routes/usuario');
+		var documento 		  =   require('./routes/documento');
+		var destino 		  =   require('./routes/destino');
+		var tag 			  =   require('./routes/tag');
+		var tarifaPuntoAPunto =   require('./routes/tarifaPuntoAPunto');
 
 		}
 		catch(err){
