@@ -40,6 +40,13 @@ var Destino = sequelize.define("Destino", {
 
 
             })
+        },
+        actualizar: function(destino){
+           return Destino.update(destino,{
+                  where:{
+                    id:destino.id
+                  }
+                }); 
         }
         
      

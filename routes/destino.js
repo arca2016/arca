@@ -18,9 +18,31 @@ router.route('/')
 	  			res.status(400).send(err);
 	  	})
 	
-
 })
-
-
+.patch(function(req,res) {
+	
+		Destino.actualizar(req.body.destino).then(function(result){
+	  		res.send(result);
+	  	},function(err){
+	  			res.status(400).send(err);
+	  	})
+	
+})
+router.route('/:id')
+.delete(function(req,res) {
+	Destino.getById(req.params.id)
+		.then(function(destino){
+			if(!destino){
+				res.status = 404;
+				res.send();
+				return;
+			}
+			else{
+				destino.destroy().then(function(result){
+					res.send(result);
+				})
+			}
+		});
+})
 
 module.exports = router;
