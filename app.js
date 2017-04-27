@@ -185,7 +185,7 @@ db.sequelize.sync().then(function(){
 		var destino 		  =   require('./routes/destino');
 		var tag 			  =   require('./routes/tag');
 		var tarifaPuntoAPunto =   require('./routes/tarifaPuntoAPunto');
-
+		var tarifaPorHora =   require('./routes/tarifaPorHora');
 		}
 		catch(err){
 			console.log("Error cargando las rutas");
@@ -206,6 +206,7 @@ db.sequelize.sync().then(function(){
 		app.use('/destino',destino);
 		app.use('/tag',tag);
 		app.use('/tarifaPuntoAPunto',tarifaPuntoAPunto);
+		app.use('/tarifaPorHora',tarifaPorHora);
 		
 		var nodeExcel = require('excel-export');
 		
