@@ -17,7 +17,9 @@ var Destino = sequelize.define("Destino", {
 
 }, {
     classMethods: {
-       
+        associate: function(models) {          
+            Destino.belongsToMany(models.Paquete,{ onDelete: 'cascade', as: 'DestinoPaquetes', through:'Paquete_Destino'});
+        },
         getById: function(id) {
             return Destino.findById(id);
         },
