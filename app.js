@@ -9,7 +9,7 @@ var cookieParser   = require('cookie-parser');
 var jwt            = require('express-jwt');
 var jsonwebtoken   = require('jsonwebtoken');
 var multiparty 	   = require('connect-multiparty');
-var i18n 		   = require('i18n'); 
+var i18n 		   = require('i18n');
 var app 		   = express();
 var secret         = 'supersecret'
 
@@ -31,8 +31,8 @@ Date.prototype.format = function(fstr, utc) {
     case '%H': m = that[utc + 'Hours'] (); break;
     case '%M': m = that[utc + 'Minutes'] (); break;
     case '%S': m = that[utc + 'Seconds'] (); break;
-    default: return m.slice (1); 
-    }    
+    default: return m.slice (1);
+    }
     return ('0' + m).slice (-2);
   });
 };
@@ -57,14 +57,14 @@ var authenticate   = jwt({
   	catch(err){
   			 console.dir(err)
   	}
-  	
+
   }
 });
 
-var initDatabaseParameters = function(){   				
-   
-   		return 	db.Usuario.createAdmin()   
-   
+var initDatabaseParameters = function(){
+
+   		return 	db.Usuario.createAdmin()
+
 }
 var transformacionDeFechas = function(req,res,next){
 	if (req.body.viaje){
@@ -139,7 +139,7 @@ var transformacionDeFechas = function(req,res,next){
         }
     }
 	next();
-				
+
 }
 
 // Configuration
@@ -159,6 +159,7 @@ var transformacionDeFechas = function(req,res,next){
 	{url:'/tarifaPorHora', methods: ['GET']},
 	{url:'/tarifaPuntoAPunto', methods: ['GET']},
 	{url:'/paquete', methods: ['GET']},
+  {url:/\origen\.*/, methods:['GET']},
 	'/favicon.ico',
 	'/auth/login',
 	'/Excel',
@@ -219,10 +220,10 @@ db.sequelize.sync().then(function(){
 		app.use('/tarifaPuntoAPunto',tarifaPuntoAPunto);
 		app.use('/tarifaPorHora',tarifaPorHora);
 		app.use('/paquete',paquete);
-		
-		
+
+
 		var nodeExcel = require('excel-export');
-		
+
 		app.use('/Excel', function(req, res){
 			return db.Vehiculo.soloVehiculos(req.query.angenciaId).then(function(vehiculos){
 				var buscarPlaca = function(id){
@@ -234,7 +235,7 @@ db.sequelize.sync().then(function(){
 					return "Vehiculo no encontrado"
 				}
 
-			return db.Viaje.informe().then(function(viajes){			
+			return db.Viaje.informe().then(function(viajes){
 				for ( let i = viajes.length - 1; i >= 0; i--) {
 					viajes[i] = Object.keys(viajes[i]).map(function (key) { return viajes[i][key]; });
 				}
@@ -245,41 +246,41 @@ db.sequelize.sync().then(function(){
 			    conf.cols = [{
 			        caption:'Origen',
 			        type:'string'
-			        
+
 			    },{
 			        caption:'Destino',
 			        type:'string'
-			        
+
 			    },{
 			        caption:'Descripcion',
 			        type:'string'
-			        
+
 			    },{
 			        caption:'Fecha inicio',
 			        type:'string',
 			        beforeCellWrite:function(){
-			            return function(row, cellData, eOpt){									
-			              	var fecha = new Date(cellData)			
+			            return function(row, cellData, eOpt){
+			              	var fecha = new Date(cellData)
 			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
-			            } 
+			            }
 			        }()
 			    },{
 			        caption:'Fecha fin',
 			        type:'string',
 			        beforeCellWrite:function(){
-			            return function(row, cellData, eOpt){			            	
-			              	var fecha = new Date(cellData)			            	
+			            return function(row, cellData, eOpt){
+			              	var fecha = new Date(cellData)
 			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
-			            } 
+			            }
 			        }()
 			    },{
 			        caption:'Fecha agendamiento',
 			        type:'string',
 			        beforeCellWrite:function(){
-			            return function(row, cellData, eOpt){			            	
-			            	var fecha = new Date(cellData)			            	
+			            return function(row, cellData, eOpt){
+			            	var fecha = new Date(cellData)
 			              	return fecha.format ("%Y-%m-%d %H:%M:%S", false)
-			            } 
+			            }
 			        }()
 			    },{
 			        caption:'Placa',
@@ -287,7 +288,7 @@ db.sequelize.sync().then(function(){
 			        beforeCellWrite:function(){
 			            return function(row, cellData, eOpt){
 			              	return buscarPlaca(cellData);
-			            } 
+			            }
 			        }()
 			    }
 			    ,{
@@ -316,22 +317,22 @@ db.sequelize.sync().then(function(){
 			    res.setHeader('Content-Type', 'application/vnd.openxmlformats');
 			    res.setHeader("Content-Disposition", "attachment; filename=" + "Reporte Arca.xlsx");
 			    res.end(result, 'binary');
-			    
-			    
+
+
 			 })
 
 
 
 
 			})
-			
+
 		  });
 		}
 		catch(err){
 			console.log("Error usando las rutas");
 			console.dir(err);
 		}
-		
+
 	})
-	
+
 })
