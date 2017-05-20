@@ -46,7 +46,7 @@ var PayURespuesta = sequelize.define("PayURespuesta", {
     billing_country	:DataTypes.STRING,
     commision_pol		:DataTypes.FLOAT,
     commision_pol_currency		:DataTypes.STRING,
-    customer_number	:DataTypes.INTEGER,
+    customer_number	:DataTypes.STRING,
     date	:DataTypes.DATE,
     error_code_bank	:DataTypes.STRING,
     error_message_bank	:DataTypes.STRING,
