@@ -17,6 +17,7 @@ router.route('/')
 		PayURespuesta.crear(req.body).then(function(result){
 	  		res.send(result);
 	  	},function(err){
+			  console.dir(err)
 	  			res.status(400).send(err);
 	  	})
 	
