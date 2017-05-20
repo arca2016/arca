@@ -9,7 +9,7 @@ var Orden = sequelize.define("Orden", {
     deletedAt: DataTypes.DATE, 
     description:DataTypes.STRING,
     referenceCode:{type:DataTypes.UUID, defaultValue: DataTypes.UUIDV4},
-    amount:DataTypes.STRING,
+    amount:DataTypes.INTEGER,
     signature:DataTypes.STRING,
     buyerEmail:DataTypes.STRING,
     status:DataTypes.STRING,

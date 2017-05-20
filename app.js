@@ -159,7 +159,10 @@ var transformacionDeFechas = function(req,res,next){
 	{url:'/tarifaPorHora', methods: ['GET']},
 	{url:'/tarifaPuntoAPunto', methods: ['GET']},
 	{url:'/paquete', methods: ['GET']},
-  {url:/\origen\.*/, methods:['GET']},
+	{url:'/orden', methods: ['POST']},
+	{url:/\/orden\/reference\/\.*/, methods: ['GET']},
+    {url:/\origen\.*/, methods:['GET']},
+	{url:'/payURespuesta', methods: ['POST']},	
 	'/favicon.ico',
 	'/auth/login',
 	'/Excel',
@@ -196,8 +199,11 @@ db.sequelize.sync().then(function(){
 		var destino 		  =   require('./routes/destino');
 		var tag 			  =   require('./routes/tag');
 		var tarifaPuntoAPunto =   require('./routes/tarifaPuntoAPunto');
-		var tarifaPorHora =   require('./routes/tarifaPorHora');
-		var paquete =   require('./routes/paquete');
+		var tarifaPorHora 	  =   require('./routes/tarifaPorHora');
+		var paquete 		  =   require('./routes/paquete');
+		var orden 			  =   require('./routes/orden');
+		var payURespuesta 	  =   require('./routes/payURespuesta');
+		
 		}
 		catch(err){
 			console.log("Error cargando las rutas");
@@ -220,7 +226,8 @@ db.sequelize.sync().then(function(){
 		app.use('/tarifaPuntoAPunto',tarifaPuntoAPunto);
 		app.use('/tarifaPorHora',tarifaPorHora);
 		app.use('/paquete',paquete);
-
+		app.use('/orden',orden);
+		app.use('/payURespuesta',payURespuesta);
 
 		var nodeExcel = require('excel-export');
 
