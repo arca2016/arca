@@ -2,7 +2,8 @@
 
 var models  = require(__dirname);
 var Q = require('q')
-
+var md5 = require('md5');
+var payUConfiguration = require('../config/payU.json')[process.env.NODE_ENV]
 
 module.exports = function(sequelize, DataTypes) {
 var Orden = sequelize.define("Orden", {
@@ -29,11 +30,15 @@ var Orden = sequelize.define("Orden", {
               }
             }); 
         },
-        crear: function(orden){
-            return Orden.create(orden);
+        crear: function(orden){          
+            return Orden.create(orden).then(function(newOrderInsance){
+                var plainNewOrder = newOrderInsance.dataValues;
+                var stringForSignature = payUConfiguration.Apikey+"~"+payUConfiguration.merchantId+"~"+plainNewOrder.referenceCode+"~"+orden.amount+"~COP";
+                plainNewOrder.signature=md5(stringForSignature)
+                return plainNewOrder;
+            });
         },
         actualizar: function(referenceCode){
-
            return Orden.update(orden,{
                   where:{
                     referenceCode:orden.referenceCode
