@@ -168,7 +168,8 @@ var transformacionDeFechas = function(req,res,next){
 	'/Excel',
 	'/auth/logout',
 	'/auth/register',
-	/\/auth\/getSignedURL\/\.*/]}));
+	/\/auth\/getSignedURL\/\.*/,
+	/^\/socket.io\.*/]}));
 
 	app.use(function(err, req, res, next) {
 		console.dir(err);
@@ -183,27 +184,28 @@ db.sequelize.sync().then(function(){
 	var port = process.env.PORT || 3000;
 
 	initDatabaseParameters().then(function(){
-		app.listen(port, function() {
+		var server = app.listen(port, function() {
 	  		console.log("Listening on " + port);
 		});
+
 		try{
-		var auth    		  =   require('./routes/auth');
-		var agencia 		  =   require('./routes/agencia');
-		var vehiculo 		  =   require('./routes/vehiculo');
-		var viaje 			  =   require('./routes/viaje');
-		var diaFestivo        =   require('./routes/diaFestivo');
-		var marca             =   require('./routes/marca');
-		var referencia        =   require('./routes/referencia');
-		var usuario 		  =   require('./routes/usuario');
-		var documento 		  =   require('./routes/documento');
-		var destino 		  =   require('./routes/destino');
-		var tag 			  =   require('./routes/tag');
-		var tarifaPuntoAPunto =   require('./routes/tarifaPuntoAPunto');
-		var tarifaPorHora 	  =   require('./routes/tarifaPorHora');
-		var paquete 		  =   require('./routes/paquete');
-		var orden 			  =   require('./routes/orden');
-		var payURespuesta 	  =   require('./routes/payURespuesta');
-		
+			var io 				  =	  require('socket.io')(server);	
+			var auth    		  =   require('./routes/auth');
+			var agencia 		  =   require('./routes/agencia');
+			var vehiculo 		  =   require('./routes/vehiculo');
+			var viaje 			  =   require('./routes/viaje');
+			var diaFestivo        =   require('./routes/diaFestivo');
+			var marca             =   require('./routes/marca');
+			var referencia        =   require('./routes/referencia');
+			var usuario 		  =   require('./routes/usuario');
+			var documento 		  =   require('./routes/documento');
+			var destino 		  =   require('./routes/destino');
+			var tag 			  =   require('./routes/tag');
+			var tarifaPuntoAPunto =   require('./routes/tarifaPuntoAPunto');
+			var tarifaPorHora 	  =   require('./routes/tarifaPorHora');
+			var paquete 		  =   require('./routes/paquete');
+			var orden 			  =   require('./routes/orden');
+			var payURespuesta 	  =   require('./routes/payURespuesta')(io)
 		}
 		catch(err){
 			console.log("Error cargando las rutas");

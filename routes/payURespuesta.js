@@ -1,3 +1,4 @@
+module.exports = function(io) {
 var express = require('express');
 var router  = express.Router();
 var PayURespuesta = require('./../models').PayURespuesta;
@@ -15,6 +16,9 @@ router.route('/')
 .post(function(req,res) {
 	
 		PayURespuesta.crear(req.body).then(function(result){
+			if(req.body.response_message_pol==="A"){
+				io.sockets.emit('newPayment');
+			}
 	  		res.send(result);
 	  	},function(err){
 			  console.dir(err)
@@ -52,4 +56,5 @@ router.route('/:id')
 
 
 
-module.exports = router;
+return router;
+}
