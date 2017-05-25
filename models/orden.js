@@ -38,7 +38,9 @@ var Orden = sequelize.define("Orden", {
             return Orden.create(orden).then(function(newOrderInsance){
                 var plainNewOrder = newOrderInsance.dataValues;
                 var stringForSignature = payUConfiguration.Apikey+"~"+payUConfiguration.merchantId+"~"+plainNewOrder.referenceCode+"~"+orden.amount+"~COP";
+                console.log("////////////////////////////////")
                 plainNewOrder.signature=md5(stringForSignature)
+                console.log("////////////////////////////////")
                 return plainNewOrder;
             });
         },

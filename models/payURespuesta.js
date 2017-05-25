@@ -83,7 +83,13 @@ var PayURespuesta = sequelize.define("PayURespuesta", {
             }); 
         },
         crear: function(payURespuesta){
-            return PayURespuesta.create(payURespuesta);
+           return sequelize.model('Orden').getByReferenceCode(payURespuesta.reference_sale).then(function(oderInstace){
+                oderInstace.status= payURespuesta.response_message_pol;
+                return oderInstace.save().then(function(){
+                    return PayURespuesta.create(payURespuesta);
+                })
+            })
+            
         },
         actualizar: function(referenceSale){
 

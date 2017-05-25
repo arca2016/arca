@@ -1,9 +1,10 @@
 {
     "production":{
-        "Apikey": "3c9ub30cckl1umfd0jov4f8vqc",
-        "ApiLogin":"ed2db842b8e305f",
+        "Apikey": "4Vj8eK4rloUd272L48hsrarnUA",
+        "ApiLogin":"pRRXKOl8ikMmt9u",
         "PublicKey":"PKa64x851nTxo5184637Oh3BdnId",
-        "Comercio": "514848"
+        "merchantId": "508029",
+        "accountId": "512321"
     },
     "development":{
         "Apikey": "4Vj8eK4rloUd272L48hsrarnUA",
