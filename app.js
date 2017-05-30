@@ -20,6 +20,7 @@ var app = express();
 app.use(cors());
 app.options('*', cors());
 
+
 Date.prototype.format = function(fstr, utc) {
   var that = this;
   utc = utc ? 'getUTC' : 'get';
@@ -189,7 +190,7 @@ db.sequelize.sync().then(function(){
 		});
 
 		try{
-			var io 				  =	  require('socket.io')(server);	
+			var io 				  =	  require('socket.io')(server,{origins:'*:*'});	 
 			var auth    		  =   require('./routes/auth');
 			var agencia 		  =   require('./routes/agencia');
 			var vehiculo 		  =   require('./routes/vehiculo');

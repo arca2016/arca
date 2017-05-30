@@ -16,7 +16,10 @@ router.route('/')
 .post(function(req,res) {
 	
 		PayURespuesta.crear(req.body).then(function(result){
-			if(req.body.response_message_pol==="A"){
+			console.log("/////////////////////")
+			console.log(req.body.response_message_pol)
+			if(req.body.response_message_pol==="APPROVED"){
+				console.log("Emiting newPayment througt sockets")
 				io.sockets.emit('newPayment');
 			}
 	  		res.send(result);
