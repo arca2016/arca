@@ -13,10 +13,15 @@ var Orden = sequelize.define("Orden", {
     buyerName:DataTypes.STRING,
     buyerPhone:DataTypes.STRING,
     buyerEmail:DataTypes.STRING,
-    pickupAddres:DataTypes.STRING,
     amount:DataTypes.INTEGER,
     signature:DataTypes.STRING,
     status:DataTypes.STRING,
+    fechaInicio:DataTypes.DATE,
+    fechaFin:DataTypes.DATE,
+    origen:DataTypes.INTEGER,
+    destino:DataTypes.INTEGER,
+    capacidadSolicitado:DataTypes.INTEGER
+
 
 }, {
     classMethods: {
