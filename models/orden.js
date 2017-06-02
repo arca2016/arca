@@ -43,7 +43,6 @@ var Orden = sequelize.define("Orden", {
               }
             });
         },
-<<<<<<< HEAD
         getPassengersByReferenceCode: function(referenceCode) {
             return Orden.findOne({ 
               attributes: ['referenceCode', 'passengers'],
@@ -52,19 +51,12 @@ var Orden = sequelize.define("Orden", {
               }
             }); 
         },
-        crear: function(orden){          
-=======
+
         crear: function(orden){
->>>>>>> 69adcd452be6b963d4079dfc376dd4e544d15b1b
             orden.status="Pendiente";
             return Orden.create(orden).then(function(newOrderInsance){
                 var plainNewOrder = newOrderInsance.dataValues;
                 var stringForSignature = payUConfiguration.Apikey+"~"+payUConfiguration.merchantId+"~"+plainNewOrder.referenceCode+"~"+orden.amount+"~COP";
-<<<<<<< HEAD
-=======
-                console.log("////////////////////////////////")
-                console.log(stringForSignature)
->>>>>>> 69adcd452be6b963d4079dfc376dd4e544d15b1b
                 plainNewOrder.signature=md5(stringForSignature)
                 return plainNewOrder;
             });
