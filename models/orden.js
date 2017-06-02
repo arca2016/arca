@@ -11,33 +11,39 @@ var ses = new aws.SES();
 
 module.exports = function(sequelize, DataTypes) {
 var Orden = sequelize.define("Orden", {
-    deletedAt: DataTypes.DATE, 
+    deletedAt: DataTypes.DATE,
     description:DataTypes.STRING,
     referenceCode:{type:DataTypes.UUID, defaultValue: DataTypes.UUIDV4},
     buyerName:DataTypes.STRING,
     buyerPhone:DataTypes.STRING,
     buyerEmail:DataTypes.STRING,
-    pickupAddres:DataTypes.STRING,
     amount:DataTypes.INTEGER,
-    signature:DataTypes.STRING,   
+    signature:DataTypes.STRING,
     status:DataTypes.STRING,
-    passengers:DataTypes.ARRAY(DataTypes.JSON)
+    passengers:DataTypes.ARRAY(DataTypes.JSON),
+    fechaInicio:DataTypes.DATE,
+    fechaFin:DataTypes.DATE,
+    origen:DataTypes.INTEGER,
+    destino:DataTypes.INTEGER,
+    capacidadSolicitado:DataTypes.INTEGER
+
 
 }, {
     classMethods: {
 
-        associate: function(models) {           
+        associate: function(models) {
         },
         getById: function(id) {
             return Orden.findById(id);
         },
         getByReferenceCode: function(referenceCode) {
-            return Orden.findOne({ 
-              where:{  
+            return Orden.findOne({
+              where:{
                 referenceCode: referenceCode
               }
-            }); 
+            });
         },
+<<<<<<< HEAD
         getPassengersByReferenceCode: function(referenceCode) {
             return Orden.findOne({ 
               attributes: ['referenceCode', 'passengers'],
@@ -47,10 +53,18 @@ var Orden = sequelize.define("Orden", {
             }); 
         },
         crear: function(orden){          
+=======
+        crear: function(orden){
+>>>>>>> 69adcd452be6b963d4079dfc376dd4e544d15b1b
             orden.status="Pendiente";
             return Orden.create(orden).then(function(newOrderInsance){
                 var plainNewOrder = newOrderInsance.dataValues;
                 var stringForSignature = payUConfiguration.Apikey+"~"+payUConfiguration.merchantId+"~"+plainNewOrder.referenceCode+"~"+orden.amount+"~COP";
+<<<<<<< HEAD
+=======
+                console.log("////////////////////////////////")
+                console.log(stringForSignature)
+>>>>>>> 69adcd452be6b963d4079dfc376dd4e544d15b1b
                 plainNewOrder.signature=md5(stringForSignature)
                 return plainNewOrder;
             });
@@ -80,7 +94,7 @@ var Orden = sequelize.define("Orden", {
                   where:{
                     referenceCode:orden.referenceCode
                   }
-                }); 
+                });
         },
         updatePassengers: function(order){
            return Orden.update({passengers:order.passengers},{
@@ -92,7 +106,7 @@ var Orden = sequelize.define("Orden", {
         list: function() {
             return Orden.findAll({order: [['updatedAt', 'DESC']]});
         }
-        
+
 
     }
 
