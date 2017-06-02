@@ -1,0 +1,84 @@
+
+
+<html>
+<body>
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #FAFAFA;
+    font: 12pt "Tahoma";
+      }
+  * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+  }
+
+  table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+  
+.page {
+    width: 21cm;
+    min-height: 29.7cm;
+    max-height: 29.7cm;
+    padding: 2cm;
+    margin: 0cm -1cm;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+  .subpage {
+    padding: 1cm;
+    border: 5px red solid;
+    height: 256mm;
+    outline: 2cm #FFEAEA solid;
+  }
+
+
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  @media print {
+    html, body {
+      width: 210mm;
+      height: 297mm;
+    }
+  }
+
+  </style>
+
+
+  <div class="book">
+    <div class="page">
+      <div class="container" style="margin-top: -13%;height: 8cm;;">
+        <h3 style="margin-bottom: -19px;margin-left: -6%; font-size: 16px;" align="center">Viajex.co</h3>
+        <img src="https://s3-us-west-2.amazonaws.com/arca/logo_sticky.png">
+        <h3 align="center font-size: 16px;">Departamento de ventas</h3>
+        <h3 align="center font-size: 16px;">Recibo de pago</h3>
+        <hr>
+
+
+
+        Gracias por confiar en Viajex.co, movilizamos tus sueños.
+        <h4 style="margin-left: 3%; font-size: 16px; font-weight: 300;"><span style="
+          font-weight: 600;">Solo falta que ingreses en este link para decirnos que personas te acompañaran en este viaje:</span>
+          <%= orderReference %></h4>
+          
+            <hr>
+             
+
+          </div>
+        </div>
+      </div>
+
+    </body>
+    </html>

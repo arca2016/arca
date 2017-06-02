@@ -164,6 +164,7 @@ var transformacionDeFechas = function(req,res,next){
 	{url:/\/orden\/reference\/\.*/, methods: ['GET']},
     {url:/\origen\.*/, methods:['GET']},
 	{url:'/payURespuesta', methods: ['POST']},	
+	'/orden/pasajeros',
 	'/favicon.ico',
 	'/auth/login',
 	'/Excel',

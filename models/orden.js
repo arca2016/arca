@@ -4,6 +4,10 @@ var models  = require(__dirname);
 var Q = require('q')
 var md5 = require('md5');
 var payUConfiguration = require('../config/payU.json')[process.env.NODE_ENV]
+var config = require('../config/aws.json');
+var aws = require('aws-sdk');
+aws.config = new aws.Config(config);
+var ses = new aws.SES();
 
 module.exports = function(sequelize, DataTypes) {
 var Orden = sequelize.define("Orden", {
@@ -17,6 +21,7 @@ var Orden = sequelize.define("Orden", {
     amount:DataTypes.INTEGER,
     signature:DataTypes.STRING,   
     status:DataTypes.STRING,
+    passengers:DataTypes.ARRAY(DataTypes.JSON)
 
 }, {
     classMethods: {
@@ -33,21 +38,54 @@ var Orden = sequelize.define("Orden", {
               }
             }); 
         },
+        getPassengersByReferenceCode: function(referenceCode) {
+            return Orden.findOne({ 
+              attributes: ['referenceCode', 'passengers'],
+              where:{  
+                referenceCode: referenceCode
+              }
+            }); 
+        },
         crear: function(orden){          
             orden.status="Pendiente";
             return Orden.create(orden).then(function(newOrderInsance){
                 var plainNewOrder = newOrderInsance.dataValues;
                 var stringForSignature = payUConfiguration.Apikey+"~"+payUConfiguration.merchantId+"~"+plainNewOrder.referenceCode+"~"+orden.amount+"~COP";
-                console.log("////////////////////////////////")
                 plainNewOrder.signature=md5(stringForSignature)
-                console.log("////////////////////////////////")
                 return plainNewOrder;
             });
+        },
+        sendConfirmationEmail:function(destination,orderReference){
+              var template = fs.readFileSync('templates/mail/transaccionExitosa.ejs', 'utf8');
+			            email = ejs.render(template,{orderReference:orderReference});
+                        ses.sendEmail({
+                            Source:config.from,
+                            Destination: { ToAddresses: [destination] },
+                            Message: {
+                                Subject: {
+                                    Data: 'Transaccion exitosa!'
+                                },
+                                Body: {
+                                    Html: {
+                                        Data: email
+                                    }
+                                }
+                            }
+                        },function(status){
+                            deferred.resolve(cobrable);
+                        })
         },
         actualizar: function(referenceCode){
            return Orden.update(orden,{
                   where:{
                     referenceCode:orden.referenceCode
+                  }
+                }); 
+        },
+        updatePassengers: function(order){
+           return Orden.update({passengers:order.passengers},{
+                  where:{
+                    referenceCode:order.referenceCode
                   }
                 }); 
         },

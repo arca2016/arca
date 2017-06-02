@@ -86,6 +86,9 @@ var PayURespuesta = sequelize.define("PayURespuesta", {
            return sequelize.model('Orden').getByReferenceCode(payURespuesta.reference_sale).then(function(oderInstace){
                 oderInstace.status= payURespuesta.response_message_pol;
                 return oderInstace.save().then(function(){
+                    if(orderInstance.status=="APPROVED"){
+                      sequelize.model('Orden').sendConfirmationEmail(orderInstance.buyerEmail,orderInstance.referenceCode)
+                    }
                     return PayURespuesta.create(payURespuesta);
                 })
             })

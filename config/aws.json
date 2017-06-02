@@ -3,6 +3,7 @@
     "secretAccessKey":"oTm/oBiHQzZxVN13lbJ+2uMohxcLp3LN+qTioo5D",
     "s3Url":"https://s3-us-west-2.amazonaws.com/arca",
     "region": "us-west-2",
+    "from": "no-responder@viajex.co",
     "signatureVersion": "v4"
     
 }  

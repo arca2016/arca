@@ -10,6 +10,21 @@ router.route('/reference/:reference')
   	})
 })
 
+router.route('/listPassengers/:reference')
+.get(function(req,res) {
+	Orden.getPassengersByReferenceCode(req.params.reference).then(function(result){
+  		res.send(result);
+  	})
+})
+
+router.route('/pasajeros')
+.patch(function(req,res) {
+	Orden.updatePassengers(req.body.orden).then(function(result){
+	  		res.send(result);
+	  	},function(err){
+	  			res.status(400).send(err);
+	  	})
+})
 
 router.route('/')
 .get(function(req,res) {
