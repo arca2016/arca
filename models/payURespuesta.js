@@ -83,9 +83,9 @@ var PayURespuesta = sequelize.define("PayURespuesta", {
             }); 
         },
         crear: function(payURespuesta){
-           return sequelize.model('Orden').getByReferenceCode(payURespuesta.reference_sale).then(function(oderInstace){
-                oderInstace.status= payURespuesta.response_message_pol;
-                return oderInstace.save().then(function(){
+           return sequelize.model('Orden').getByReferenceCode(payURespuesta.reference_sale).then(function(orderInstance){
+                orderInstance.status= payURespuesta.response_message_pol;
+                return orderInstance.save().then(function(){
                     if(orderInstance.status=="APPROVED"){
                       sequelize.model('Orden').sendConfirmationEmail(orderInstance.buyerEmail,orderInstance.referenceCode)
                     }
