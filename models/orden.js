@@ -1,7 +1,9 @@
 "use strict";
 
 var models  = require(__dirname);
-var Q = require('q')
+var Q = require('q');
+var fs = require('fs');
+var ejs     = require('ejs');
 var md5 = require('md5');
 var payUConfiguration = require('../config/payU.json')[process.env.NODE_ENV]
 var config = require('../config/aws.json');
@@ -63,7 +65,7 @@ var Orden = sequelize.define("Orden", {
         },
         sendConfirmationEmail:function(destination,orderReference){
               var template = fs.readFileSync('templates/mail/transaccionExitosa.ejs', 'utf8');
-			            email = ejs.render(template,{orderReference:orderReference});
+			            var email = ejs.render(template,{orderReference:orderReference});
                         ses.sendEmail({
                             Source:config.from,
                             Destination: { ToAddresses: [destination] },
@@ -78,7 +80,10 @@ var Orden = sequelize.define("Orden", {
                                 }
                             }
                         },function(status){
-                            deferred.resolve(cobrable);
+                            console.log("/////////////////////")
+                            console.dir(status)
+                            console.log("/////////////////////")
+                            Promise.resolve(status);
                         })
         },
         actualizar: function(referenceCode){

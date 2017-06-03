@@ -18,7 +18,7 @@ router.route('/')
 		PayURespuesta.crear(req.body).then(function(result){
 			console.log("/////////////////////")
 			console.log(req.body.response_message_pol)
-			if(req.body.response_message_pol==="APPROVED"){
+			if(req.body.response_message_pol=="APPROVED"){
 				console.log("Emiting newPayment througt sockets")
 				io.sockets.emit('newPayment');
 			}
