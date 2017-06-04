@@ -15,6 +15,7 @@ router.route('/')
 		Paquete.crear(req.body.paquete).then(function(result){
 	  		res.send(result);
 	  	},function(err){
+			  console.dir(err)
 	  			res.status(400).send(err);
 	  	})
 	

@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
 
 var Paquete = sequelize.define("Paquete", {
     deletedAt: DataTypes.DATE, 
+    imagenDestacada:DataTypes.STRING,
     nombre:DataTypes.STRING,
     descripcion:DataTypes.STRING(3000),
     tarifaAdulto:DataTypes.INTEGER,
@@ -21,6 +22,8 @@ var Paquete = sequelize.define("Paquete", {
     snacksManana:{type:DataTypes.INTEGER,defaultValue:0},
     snacksTarde:{type:DataTypes.INTEGER,defaultValue:0},
     activo:{type:DataTypes.BOOLEAN,defaultValue:true},
+    tarifa:DataTypes.INTEGER
+
 
 
 }, {
@@ -35,13 +38,20 @@ var Paquete = sequelize.define("Paquete", {
            return  Paquete.findOne({where:{nombre:nombre}});
         },
         list: function() {
-            return Paquete.findAll({ order: 'nombre'});
+            return Paquete.findAll(
+             { order: 'nombre', 
+                include: [
+                 {model: sequelize.model('Destino'),as:'PaqueteDestinos'}
+                ]
+            });
         },
         crear : function(paquete,agenciaId){
             paquete.AgenciumId=agenciaId;
             return  Paquete.findOne({where:{nombre:paquete.nombre}}).then(function(resultado){
                 if(!resultado){
-                    return Paquete.build(paquete).save();
+                    return Paquete.build(paquete).save().then(function(paqueteInstancia){
+                        return paqueteInstancia.setPaqueteDestinos(paquete.destinos)
+                    });
                 }
                 else{
                     throw "Error ya existe una paquete con ese nombre";
@@ -56,6 +66,10 @@ var Paquete = sequelize.define("Paquete", {
                   where:{
                     id:paquete.id
                   }
+                }).then(function(){
+                  return  Paquete.findById(paquete.id).then(function(paqueteInstancia){
+                         return paqueteInstancia.setPaqueteDestinos(paquete.destinos)
+                    });
                 }); 
         }
         
