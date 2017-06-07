@@ -12,6 +12,8 @@ var Destino = sequelize.define("Destino", {
     descripcion:DataTypes.STRING(3000),
     ubicacion:DataTypes.STRING,
     imagenes:DataTypes.ARRAY(DataTypes.STRING),
+    esMunicipio : {type:DataTypes.BOOLEAN, defaultValue:false},
+
     //lugaresDestacados:DataTypes.ARRAY(DataTypes.JSON),
     comentarios:DataTypes.ARRAY(DataTypes.JSON)
 
@@ -25,6 +27,12 @@ var Destino = sequelize.define("Destino", {
         },
         buscarPorNombre : function(nombre){
            return  Destino.findOne({where:{nombre:nombre}});
+        },
+        listaMunicipios: function(agenciaId) {
+            return Destino.findAll({ where:{esMunicipio:true}});
+        },
+        listaEmblematicos: function(agenciaId) {
+            return Destino.findAll({ where:{   $or: [{esMunicipio:false},{esMunicipio:null}]}});
         },
         list: function(agenciaId) {
             return Destino.findAll({ order: 'nombre'});

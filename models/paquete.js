@@ -22,7 +22,9 @@ var Paquete = sequelize.define("Paquete", {
     snacksManana:{type:DataTypes.INTEGER,defaultValue:0},
     snacksTarde:{type:DataTypes.INTEGER,defaultValue:0},
     activo:{type:DataTypes.BOOLEAN,defaultValue:true},
-    tarifa:DataTypes.INTEGER
+    tarifa:DataTypes.INTEGER,
+    uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV4},
+
 
 
 

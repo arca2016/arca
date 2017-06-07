@@ -10,6 +10,18 @@ router.route('/')
   		res.send(result);
   	})
 })
+router.route('/municipios')
+.get(function(req,res) {
+	Destino.listaMunicipios().then(function(result){
+  		res.send(result);
+  	})
+})
+router.route('/emblematicos')
+.get(function(req,res) {
+	Destino.listaEmblematicos().then(function(result){
+  		res.send(result);
+  	})
+})
 .post(function(req,res) {
 	
 		Destino.crear(req.body.destino).then(function(result){

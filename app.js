@@ -157,6 +157,8 @@ var transformacionDeFechas = function(req,res,next){
 
 	app.use(authenticate.unless({path: [
 	{url:'/destino', methods: ['GET']},
+	{url:'/destino/municipios', methods: ['GET']},
+	{url:'/destino/emblematicos', methods: ['GET']},
 	{url:'/tarifaPorHora', methods: ['GET']},
 	{url:'/tarifaPuntoAPunto', methods: ['GET']},
 	{url:'/paquete', methods: ['GET']},
