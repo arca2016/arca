@@ -4,12 +4,7 @@ var Destino = require('./../models').Destino;
 
 
 
-router.route('/')
-.get(function(req,res) {
-	Destino.list().then(function(result){
-  		res.send(result);
-  	})
-})
+
 router.route('/municipios')
 .get(function(req,res) {
 	Destino.listaMunicipios().then(function(result){
@@ -22,6 +17,14 @@ router.route('/emblematicos')
   		res.send(result);
   	})
 })
+
+router.route('/')
+.get(function(req,res) {
+	Destino.list().then(function(result){
+  		res.send(result);
+  	})
+})
+
 .post(function(req,res) {
 	
 		Destino.crear(req.body.destino).then(function(result){
