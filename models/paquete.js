@@ -39,6 +39,9 @@ var Paquete = sequelize.define("Paquete", {
         buscarPorNombre : function(nombre){
            return  Paquete.findOne({where:{nombre:nombre}});
         },
+        buscarPorUuid : function(uuid){
+           return  Paquete.findOne({where:{uuid:uuid}});
+        },
         list: function() {
             return Paquete.findAll(
              { order: 'nombre', 

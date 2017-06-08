@@ -30,6 +30,11 @@ router.route('/')
 	
 })
 router.route('/:id')
+.get(function(req,res) {
+	Paquete.buscarPorUuid(req.params.id).then(function(result){
+  		res.send(result);
+  	})
+})
 .delete(function(req,res) {
 	Paquete.getById(req.params.id)
 		.then(function(paquete){

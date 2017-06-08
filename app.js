@@ -161,7 +161,7 @@ var transformacionDeFechas = function(req,res,next){
 	{url:'/destino/emblematicos', methods: ['GET']},
 	{url:'/tarifaPorHora', methods: ['GET']},
 	{url:'/tarifaPuntoAPunto', methods: ['GET']},
-	{url:'/paquete', methods: ['GET']},
+	{url:/\paquete\.*/, methods: ['GET']},
 	{url:'/orden', methods: ['POST']},
 	{url:/\/orden\/reference\/\.*/, methods: ['GET']},
     {url:/\origen\.*/, methods:['GET']},
