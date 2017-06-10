@@ -12,6 +12,9 @@ var Paquete = sequelize.define("Paquete", {
     nombre:DataTypes.STRING,
     descripcion:DataTypes.STRING(3000),
     tarifaAdulto:DataTypes.INTEGER,
+    tarifaCeroTresAnos:DataTypes.INTEGER,
+    tarifaCuatroDiezAnos:DataTypes.INTEGER,
+    tarifaOnceQuinceAnos:DataTypes.INTEGER,
     noIncluye:DataTypes.ARRAY(DataTypes.STRING),
     recomendaciones:DataTypes.STRING(3000),
     reviews:DataTypes.ARRAY(DataTypes.JSON),
@@ -22,7 +25,7 @@ var Paquete = sequelize.define("Paquete", {
     snacksManana:{type:DataTypes.INTEGER,defaultValue:0},
     snacksTarde:{type:DataTypes.INTEGER,defaultValue:0},
     activo:{type:DataTypes.BOOLEAN,defaultValue:true},
-    tarifa:DataTypes.INTEGER,
+    duracion:DataTypes.STRING,
     uuid : {type:DataTypes.UUID, defaultValue: DataTypes.UUIDV4},
 
 
