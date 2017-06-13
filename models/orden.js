@@ -29,7 +29,7 @@ var Orden = sequelize.define("Orden", {
     destino:DataTypes.INTEGER,
     numeroClientesCeroTresAnos:DataTypes.INTEGER,
     numeroClientesCuatroDiezAnos:DataTypes.INTEGER,
-    numeroClientesOnceQuinceAnos:DataTypes.INTEGER,
+    numeroClientesOnceDiesYSieteAnos:DataTypes.INTEGER,
     numeroClientesAdultos:DataTypes.INTEGER,
     capacidadSolicitado:DataTypes.INTEGER
 

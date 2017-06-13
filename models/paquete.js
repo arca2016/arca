@@ -14,7 +14,7 @@ var Paquete = sequelize.define("Paquete", {
     tarifaAdulto:DataTypes.INTEGER,
     tarifaCeroTresAnos:DataTypes.INTEGER,
     tarifaCuatroDiezAnos:DataTypes.INTEGER,
-    tarifaOnceQuinceAnos:DataTypes.INTEGER,
+    tarifaOnceDiesYSieteAnos:DataTypes.INTEGER,
     noIncluye:DataTypes.ARRAY(DataTypes.STRING),
     recomendaciones:DataTypes.STRING(3000),
     reviews:DataTypes.ARRAY(DataTypes.JSON),
